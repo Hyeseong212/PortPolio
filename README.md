@@ -1,3 +1,4 @@
+![image](https://github.com/user-attachments/assets/d254fb66-69a2-48e4-b92f-b80c7fd8d8ec)
 # Server 프로젝트
 
 ## 개요
