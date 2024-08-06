@@ -71,3 +71,17 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 Client/Library/ArtifactDB
+# 기존 .gitignore 내용에 추가
+
+# Ignore Library folder
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# Ignore bin and obj folders
+/bin/
+/[obj]/
