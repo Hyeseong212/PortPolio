@@ -1,10 +1,7 @@
 ﻿
 namespace SharedCode.Model.HttpCommand
 {
-    public class Hello
-    {
-        public string Name { get; set; }
-    }
+
     public class AccountCreateRequest : BaseRequest
     {
         public string Id { get; set; }

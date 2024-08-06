@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
-using WebServer.Model.HttpCommand;
+using SharedCode.Model.HttpCommand;
 
 public class LOGINVIEW : MonoBehaviour
 {

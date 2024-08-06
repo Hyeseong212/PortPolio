@@ -1,0 +1,6 @@
+{
+    "name": "ClientAssembly",
+    "references": [
+        "SharedCodeLibrary"
+    ]
+}

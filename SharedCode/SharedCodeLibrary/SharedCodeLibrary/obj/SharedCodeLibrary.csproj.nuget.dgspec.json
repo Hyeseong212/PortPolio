@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {}
+    "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Client\\Assets\\Scripts\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {}
   },
   "projects": {
-    "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
+    "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Client\\Assets\\Scripts\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
+        "projectUniqueName": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Client\\Assets\\Scripts\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
         "projectName": "SharedCodeLibrary",
-        "projectPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
+        "projectPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Client\\Assets\\Scripts\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
         "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\obj\\",
+        "outputPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Client\\Assets\\Scripts\\SharedCodeLibrary\\SharedCodeLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

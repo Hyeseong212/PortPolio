@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
-using WebServer.Model.HttpCommand;
+using SharedCode.Model.HttpCommand;
 
 public class WebGuildController : MonoBehaviour
 {

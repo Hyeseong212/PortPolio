@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
-using WebServer.Model.HttpCommand;
+using SharedCode.Model.HttpCommand;
 
 public class WebLoginController : MonoBehaviour
 {

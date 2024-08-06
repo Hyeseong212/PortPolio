@@ -2,7 +2,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 
 using UnityEngine.UI;
-using WebServer.Model.HttpCommand;
+using SharedCode.Model.HttpCommand;
 
 public class SIGNUPVIEW : MonoBehaviour
 {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using WebServer.Model.HttpCommand;
+using SharedCode.Model.HttpCommand;
 
 public class MainView : MonoBehaviour
 {
