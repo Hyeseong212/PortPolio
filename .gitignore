@@ -76,3 +76,5 @@ Client/Library/ArtifactDB
 /[obj]/
 # Ignore UnityLockfile
 Client/Temp/UnityLockfile
+Client/Library/SourceAssetDB
+Client/Logs/shadercompiler-UnityShaderCompiler.exe0.log
