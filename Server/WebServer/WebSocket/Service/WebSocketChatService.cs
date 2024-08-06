@@ -90,7 +90,7 @@ public class WebSocketChatService
         if (senderNickname == null)
         {
             // 발신자 정보가 없으면 처리 (로그 기록 또는 예외 처리)
-            Console.WriteLine("Sender user not found.");
+            Logger.SetLogger(LOGTYPE.INFO, "Sender user not found.");
             return;
         }
         if (senderNickname.AccountNickName == null) return;
@@ -107,7 +107,7 @@ public class WebSocketChatService
         sendData.push(" : ");
         sendData.push(receivedText);
 
-        Console.WriteLine($"{Encoding.UTF8.GetString(sendData.Buffer, 6, sendData.Position)}");
+        Logger.SetLogger(LOGTYPE.INFO, $"{Encoding.UTF8.GetString(sendData.Buffer, 6, sendData.Position)}");
 
         // 수신자의 접속 상태 확인 및 메시지 전송
         if (ClientManager.IsClientConnected(receivingUseruidval))
@@ -117,7 +117,7 @@ public class WebSocketChatService
         else
         {
             // 수신자가 접속해 있지 않으면 처리 (로그 기록 또는 다른 처리)
-            Console.WriteLine("Receiver user is not connected.");
+            Logger.SetLogger(LOGTYPE.INFO, "Receiver user is not connected.");
         }
     }
 
@@ -142,7 +142,7 @@ public class WebSocketChatService
         if (senderNickname == null)
         {
             // 발신자 정보가 없으면 처리 (로그 기록 또는 예외 처리)
-            Console.WriteLine("Sender user not found.");
+            Logger.SetLogger(LOGTYPE.INFO, "Sender user not found.");
             return;
         }
 
@@ -152,7 +152,7 @@ public class WebSocketChatService
         if (!success)
         {
             // 길드 유저를 가져오는데 실패한 경우 처리
-            Console.WriteLine("Failed to get guild users.");
+            Logger.SetLogger(LOGTYPE.INFO, "Failed to get guild users.");
             return;
         }
         if (senderNickname.AccountNickName == null) return;
@@ -166,7 +166,7 @@ public class WebSocketChatService
         sendData.push(" : ");
         sendData.push(receivedText);
 
-        Console.WriteLine($"{Encoding.UTF8.GetString(sendData.Buffer, 6, sendData.Position)}");
+        Logger.SetLogger(LOGTYPE.INFO, $"{Encoding.UTF8.GetString(sendData.Buffer, 6, sendData.Position)}");
 
         // 길드 유저 중 온라인 상태인 유저에게 메시지 전송
         if (guildUsers == null) return;

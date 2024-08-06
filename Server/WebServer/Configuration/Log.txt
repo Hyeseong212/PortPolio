@@ -1,4 +1,0 @@
-MySQL ip: 127.0.0.1
-MySQL port: 3306
-Redis ip: 127.0.0.1
-Redis port: 6379

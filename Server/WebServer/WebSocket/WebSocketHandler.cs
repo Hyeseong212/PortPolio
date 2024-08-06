@@ -66,7 +66,7 @@ public static class WebSocketHandler
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Logger.SetLogger(LOGTYPE.ERROR, ex.Message);
         }
 
         int length = BitConverter.ToInt32(lengthBytes, 0);
@@ -82,7 +82,7 @@ public static class WebSocketHandler
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Logger.SetLogger(LOGTYPE.ERROR, ex.Message);
         }
 
         switch (protocol)

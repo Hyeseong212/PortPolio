@@ -7,7 +7,7 @@ public class SessionManager
 {
     public SessionManager()
     {
-        Console.WriteLine($"{this.ToString()} init Complete");
+        Logger.SetLogger(LOGTYPE.INFO, $"{this.ToString()} init Complete");
     }
 
     private ConcurrentDictionary<long, InGameSession> createdSessions = new ConcurrentDictionary<long, InGameSession>();
@@ -45,10 +45,10 @@ public class SessionManager
         {
             await session.EndGameCleanupAsync(); // 세션의 자원 정리 메서드 호출
             session = null; // 객체 참조 해제
-            Console.WriteLine($"Session with ID {sessionId} has been removed.");
+            Logger.SetLogger(LOGTYPE.INFO, $"Session with ID {sessionId} has been removed.");
             return true;
         }
-        Console.WriteLine($"Session with ID {sessionId} not found.");
+        Logger.SetLogger(LOGTYPE.INFO, $"Session with ID {sessionId} not found.");
         return false;
     }
 }

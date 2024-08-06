@@ -104,7 +104,7 @@ public class Initializer
         // 서버 시작 시 IP와 포트 출력
         app.Lifetime.ApplicationStarted.Register(() =>
         {
-            Console.WriteLine($"Server is running on http://127.0.0.1:5000");
+            Logger.SetLogger(LOGTYPE.INFO, $"Server is running on http://127.0.0.1:5000");
         });
 
         app.Run(); // 애플리케이션 실행

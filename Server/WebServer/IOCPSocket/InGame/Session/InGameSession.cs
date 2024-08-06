@@ -58,8 +58,8 @@ public class InGameSession : IDisposable
         }
         GameRoomEndPoint = gameRoomEndPoint;
 
-        Console.WriteLine($"Session {SessionId} started on IP {localIP}, port {GameRoomEndPoint.Port}");
-        Console.WriteLine($"Listening on {listenSocket.LocalEndPoint.ToString()}");
+        Logger.SetLogger(LOGTYPE.INFO, $"Session {SessionId} started on IP {localIP}, port {GameRoomEndPoint.Port}");
+        Logger.SetLogger(LOGTYPE.INFO, $"Listening on {listenSocket.LocalEndPoint.ToString()}");
 
         // 리스닝 및 업데이트를 하나의 쓰레드에서 처리
         sessionThread = new Thread(RunSession);
@@ -80,8 +80,8 @@ public class InGameSession : IDisposable
         }
         GameRoomEndPoint = gameRoomEndPoint;
 
-        Console.WriteLine($"Session {SessionId} started on IP {localIP}, port {GameRoomEndPoint.Port}");
-        Console.WriteLine($"Listening on {listenSocket.LocalEndPoint}");
+        Logger.SetLogger(LOGTYPE.INFO, $"Session {SessionId} started on IP {localIP}, port {GameRoomEndPoint.Port}");
+        Logger.SetLogger(LOGTYPE.INFO, $"Listening on {listenSocket.LocalEndPoint}");
 
         // 비동기 소켓 연결 수락 시작
         _ = AcceptAsync();
@@ -118,7 +118,7 @@ public class InGameSession : IDisposable
     {
         isRunning = false;
         sessionEndedEvent.Set();
-        Console.WriteLine($"Session {SessionId} stopped.");
+        Logger.SetLogger(LOGTYPE.INFO, $"Session {SessionId} stopped.");
         sessionThread.Join(); // 스레드 종료 대기
     }
 
@@ -136,7 +136,7 @@ public class InGameSession : IDisposable
         character.PlayerNum = inGamePlayerInfo.PlayerNumber;
         world.UsersCharacter.Add(character);
 
-        // Console.WriteLine($"Player {player.UserUID} added to session {SessionId}");
+        // Logger.SetLogger(LOGTYPE.INFO$"Player {player.UserUID} added to session {SessionId}");
     }
     public async Task AddPlayerAsync(PlayerInfo player)
     {
@@ -211,7 +211,7 @@ public class InGameSession : IDisposable
             if (e.AcceptSocket == null)
                 return;
             Socket clientSocket = e.AcceptSocket;
-            Console.WriteLine($"Client connected to session {SessionId}: {clientSocket.RemoteEndPoint}");
+            Logger.SetLogger(LOGTYPE.INFO, $"Client connected to session {SessionId}: {clientSocket.RemoteEndPoint}");
 
             maxConnectionsSemaphore.Wait();
 
@@ -229,7 +229,7 @@ public class InGameSession : IDisposable
         }
         else
         {
-            Console.WriteLine($"Error accepting client: {e.SocketError}");
+            Logger.SetLogger(LOGTYPE.INFO, $"Error accepting client: {e.SocketError}");
         }
 
         e.AcceptSocket = null;
@@ -307,7 +307,7 @@ public class InGameSession : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Logger.SetLogger(LOGTYPE.ERROR, ex.Message);
         }
 
         int length = BitConverter.ToInt32(lengthBytes, 0);
@@ -323,7 +323,7 @@ public class InGameSession : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Logger.SetLogger(LOGTYPE.ERROR, ex.Message);
         }
 
         switch (protocol)
@@ -396,7 +396,7 @@ public class InGameSession : IDisposable
                 characterTR.push(user.Quaternion.W);
                 SendToAllClient(characterTR);
 
-                // Console.WriteLine($"User {user.uid} Position: X={user.m_position.X}, Y={user.m_position.Y}, Z={user.m_position.Z}");
+                // Logger.SetLogger(LOGTYPE.INFO, $"User {user.uid} Position: X={user.m_position.X}, Y={user.m_position.Y}, Z={user.m_position.Z}");
             }
         }
     }
@@ -500,7 +500,7 @@ public class InGameSession : IDisposable
 
             eventArgsPool = null;
         }
-        Console.WriteLine("All Resources Disposed");
+        Logger.SetLogger(LOGTYPE.INFO, "All Resources Disposed");
         disposed = true;
     }
 

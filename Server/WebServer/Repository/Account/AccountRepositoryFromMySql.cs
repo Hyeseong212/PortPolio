@@ -383,7 +383,7 @@ namespace WebServer.Repository
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching rank rating for accountId {AccountId}", accountId);
+                Logger.SetLogger(LOGTYPE.ERROR, ex.Message + $" Error fetching rank rating for accountId {accountId}");
                 return (false, 0, 0);
             }
         }
@@ -414,7 +414,7 @@ namespace WebServer.Repository
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                _logger.LogError(ex, "Error updating rank rating for accountId {AccountId}", accountId);
+                Logger.SetLogger(LOGTYPE.ERROR, ex.Message + $" Error updating rank rating for accountId {accountId}");
                 return false; 
             }
         }
@@ -435,7 +435,7 @@ namespace WebServer.Repository
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching rank rating for accountId {AccountId}", accountId);
+                Logger.SetLogger(LOGTYPE.ERROR, ex.Message + $"Error fetching rank rating for accountId {accountId}");
                 return (false, 0);
             }
         }
@@ -464,7 +464,7 @@ namespace WebServer.Repository
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                _logger.LogError(ex, "Error updating rank rating for accountId {AccountId}", accountId);
+                Logger.SetLogger(LOGTYPE.ERROR, ex.Message + $"Error updating rank rating for accountId {accountId}");
                 return false;
             }
         }
@@ -518,7 +518,7 @@ namespace WebServer.Repository
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                _logger.LogError(ex, "Error creating guild with name {GuildName}", guildName);
+                Logger.SetLogger(LOGTYPE.ERROR, ex.Message + $"Error creating guild with name {guildName}");
                 return false;
             }
         }
@@ -554,7 +554,7 @@ namespace WebServer.Repository
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error finding guild with name {GuildName}", guildName);
+                Logger.SetLogger(LOGTYPE.ERROR, ex.Message + $"Error finding guild with name {guildName}");
                 return (false, new List<GuildInfo>());
             }
         }
