@@ -7,7 +7,7 @@ Server 프로젝트는 고성능 웹 서버를 구축하기 위해 설계된 애
 
 - **Redis**: 애플리케이션 시작 시 Redis 서버를 자동으로 초기화합니다.
 - **다양한 서비스 및 리포지토리 패턴**: 여러 서비스 (`AccountService`, `ShopService`, `InventoryService`, `RankService`, `GuildService`, `SessionService`, `WebSocketChatService`, `WebSocketMatchService`, `WebSocketLoginService`)와 리포지토리를 싱글톤 패턴으로 DI 컨테이너에 등록하여 사용합니다.
-- **MySQL**: 영구적으로 보관해야 할 데이터들은 MySQL 데이터베이스에 정규화하여 저장합니다.
+- **MySQL**: 영구적으로 보관해야 할 데이터들은 MySQL DBMS에서 정규화하여 저장합니다.
 - **TCP 실시간 인게임 통신**: 매칭 시 세션을 생성하고, 게임 종료 시 세션 자원을 해제하여 세션을 관리합니다.
 - **WebSocket**: 매칭 시스템과 채팅 시스템을 구현합니다.
 - **API 문서화 (Swagger)**: Swagger를 통해 API 문서를 자동으로 생성하고 관리합니다.
@@ -46,9 +46,9 @@ Server 프로젝트는 고성능 웹 서버를 구축하기 위해 설계된 애
 3. **API 문서 확인**:
    - Swagger UI를 통해 API 문서를 확인할 수 있습니다. 기본 주소는 `http://localhost:{포트}/swagger`입니다.
 
-## 주요 프로젝트 기능 요약
+## 서버 프로젝트 기능 요약
 
-- Redis 서버 통합 및 초기화 구현
+- Redis로 유저 세션관리
 - HTTP 프로토콜로 주요 서비스 및 리포지토리 클래스 작성
 - WebSocket으로 채팅 시스템 및 매칭 시스템 구현
 - 인게임 TCP 소켓 통신으로 실시간 통신 구현
@@ -56,6 +56,8 @@ Server 프로젝트는 고성능 웹 서버를 구축하기 위해 설계된 애
 - 로그인 및 길드 관리 (HTTP 통신)
 - 매칭 및 채팅 (WebSocket 통신)
 - 인게임 (TCP 소켓 통신)
+- Task를 사용하여 비동기 프로그래밍 및 쓰레드풀로 고성능으로 작동
+- lock, semaphore를 이용한 동시성처리
 
 # Client 프로젝트
 
