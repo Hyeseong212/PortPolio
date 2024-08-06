@@ -87,3 +87,4 @@ Client/Library/ArtifactDB
 /[obj]/
 # Ignore UnityLockfile
 /Client/Temp/UnityLockfile
+*.txt
