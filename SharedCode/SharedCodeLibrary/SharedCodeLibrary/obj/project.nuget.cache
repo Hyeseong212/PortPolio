@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "vAHVkvLsArLetWpK+XlGoW3gIF2yP/GFp7FZD4L+FAAA/n7mtaWjpTB5D+dXa2Wu+TDx5mYAtZtcE75sKTq3Pg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

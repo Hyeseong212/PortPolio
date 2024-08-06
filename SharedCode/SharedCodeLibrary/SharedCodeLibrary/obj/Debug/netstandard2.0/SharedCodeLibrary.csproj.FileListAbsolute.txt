@@ -1,0 +1,11 @@
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\bin\Debug\netstandard2.0\SharedCodeLibrary.deps.json
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\bin\Debug\netstandard2.0\SharedCodeLibrary.dll
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\bin\Debug\netstandard2.0\SharedCodeLibrary.pdb
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.csproj.AssemblyReference.cache
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.AssemblyInfoInputs.cache
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.AssemblyInfo.cs
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.csproj.CoreCompileInputs.cache
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.sourcelink.json
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.dll
+C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.pdb
