@@ -162,3 +162,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 Client/Temp/CompilationLog.txt
+
+/Client/Library/SourceAssetDB
+/Client/Logs/AssetImportWorker0.log
+/Client/Temp/CompilationLog.txt
