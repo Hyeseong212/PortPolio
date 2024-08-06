@@ -137,7 +137,7 @@ public class WebSocketController : MonoBehaviour
         {
             if (ws != null && ws.IsAlive)
             {
-                ws.Send(data.buffer);
+                ws.Send(data.Buffer);
             }
         }
         catch (Exception e)

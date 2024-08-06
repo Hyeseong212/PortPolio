@@ -473,6 +473,10 @@
       "SharedCodeLibrary/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "MessagePack": "2.5.172",
+          "MessagePack.Annotations": "2.5.172"
+        },
         "compile": {
           "bin/placeholder/SharedCodeLibrary.dll": {}
         },

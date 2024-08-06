@@ -162,7 +162,7 @@ public class InGameTCPController : MonoBehaviour
         {
             if (stream != null)
             {
-                stream.Write(data.buffer, 0, data.position);
+                stream.Write(data.Buffer, 0, data.Position);
             }
         }
         catch (Exception e)

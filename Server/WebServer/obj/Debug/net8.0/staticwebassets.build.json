@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "mlFD5w7Mg05uawqgpV868ZKwUqxVmZD03faEiZ9Nsns=",
-  "Source": "WebServer",
-  "BasePath": "_content/WebServer",
+  "Hash": "++3cXXOKxsrQx17/pLN3BgNpOHsmRIBs+DXHpf8BjCY=",
+  "Source": "MyServer",
+  "BasePath": "_content/MyServer",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
