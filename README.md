@@ -1,7 +1,5 @@
 # 프로젝트 구조도
-
-![image](https://github.com/user-attachments/assets/6681220b-989e-461d-a782-ade53f474aab)
-
+![image](https://github.com/user-attachments/assets/f68a4e7b-4e9f-4ddb-b7e9-71e7b5fae3ae)
 # Server 프로젝트
 
 ## 개요
