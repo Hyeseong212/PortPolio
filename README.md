@@ -7,9 +7,9 @@ Server 프로젝트는 고성능 웹 서버를 구축하기 위해 설계된 애
 
 - **Redis**: 애플리케이션 시작 시 Redis 서버를 자동으로 초기화합니다.
 - **다양한 서비스 및 리포지토리 패턴**: 여러 서비스 (`AccountService`, `ShopService`, `InventoryService`, `RankService`, `GuildService`, `SessionService`, `WebSocketChatService`, `WebSocketMatchService`, `WebSocketLoginService`)와 리포지토리를 싱글톤 패턴으로 DI 컨테이너에 등록하여 사용합니다.
-- **MySQL**: 서비스시 영구적으로 보관해야할 데이터들은 데이터테이블을 정규화하여 보관합니다.
-- **TCP실시간인게임통신**: 매칭시 세션을 생성하고 게임이 끝날 때 세션관련 자원을 Dispose하여 세션을 관리하도록 설정합니다.
-- **WebSocket**:매칭관련시스템과 채팅관련 시스템을 구현하였습니다.
+- **MySQL**: 영구적으로 보관해야 할 데이터들은 MySQL 데이터베이스에 정규화하여 저장합니다.
+- **TCP 실시간 인게임 통신**: 매칭 시 세션을 생성하고, 게임 종료 시 세션 자원을 해제하여 세션을 관리합니다.
+- **WebSocket**: 매칭 시스템과 채팅 시스템을 구현합니다.
 - **API 문서화 (Swagger)**: Swagger를 통해 API 문서를 자동으로 생성하고 관리합니다.
 
 ## 기술 스택
@@ -22,22 +22,22 @@ Server 프로젝트는 고성능 웹 서버를 구축하기 위해 설계된 애
 
 ## Server 디렉토리 구조
 
-- `Configuration` : 설정 관련 클래스 및 파일
-- `Controllers` : MVC 컨트롤러 클래스
-- `Helper` : 헬퍼 클래스 및 유틸리티 함수
-- `Model` : 데이터 모델 클래스
-- `Repository` : 데이터 저장소 클래스
-- `Service` : 서비스 클래스
-- `SwaggerOptions` : Swagger 설정 파일
-- `Utils` : 유틸리티 클래스 및 함수
-- `WebSocket` : WebSocket 관련 파일
-- `IOCPSocket/InGame` : 인게임 세션통신 관련 클래스 및 파일
+- `Configuration`: 설정 관련 클래스 및 파일
+- `Controllers`: MVC 컨트롤러 클래스
+- `Helper`: 헬퍼 클래스 및 유틸리티 함수
+- `Model`: 데이터 모델 클래스
+- `Repository`: 데이터 저장소 클래스
+- `Service`: 서비스 클래스
+- `SwaggerOptions`: Swagger 설정 파일
+- `Utils`: 유틸리티 클래스 및 함수
+- `WebSocket`: WebSocket 관련 파일
+- `IOCPSocket/InGame`: 인게임 세션 통신 관련 클래스 및 파일
 
 ## 설치 및 실행 방법
 
 1. **Redis 서버 설정**:
    - 프로젝트 루트 폴더의 `Redis` 디렉토리에서 Redis 서버 실행 파일을 확인합니다.
-   - Redis를 실행합니다
+   - Redis를 실행합니다.
 
 2. **프로젝트 빌드 및 실행**:
    - Visual Studio에서 `WebServer.sln` 솔루션 파일을 엽니다.
@@ -46,8 +46,16 @@ Server 프로젝트는 고성능 웹 서버를 구축하기 위해 설계된 애
 3. **API 문서 확인**:
    - Swagger UI를 통해 API 문서를 확인할 수 있습니다. 기본 주소는 `http://localhost:{포트}/swagger`입니다.
 
+## 주요 프로젝트 기능 요약
 
----
+- Redis 서버 통합 및 초기화 구현
+- HTTP 프로토콜로 주요 서비스 및 리포지토리 클래스 작성
+- WebSocket으로 채팅 시스템 및 매칭 시스템 구현
+- 인게임 TCP 소켓 통신으로 실시간 통신 구현
+- Swagger를 통한 API 문서화 설정
+- 로그인 및 길드 관리 (HTTP 통신)
+- 매칭 및 채팅 (WebSocket 통신)
+- 인게임 (TCP 소켓 통신)
 
 # Client 프로젝트
 
@@ -66,39 +74,39 @@ Client 프로젝트는 고성능 웹 서버와의 통신을 위한 클라이언�
 
 - **프로그래밍 언어**: C#
 - **프레임워크**: .NET Core
-- **API 통신**: HTTP, WebSocket, Socket(TCP)
+- **API 통신**: HTTP, WebSocket, TCP
 
 ## 프로젝트 구조
 
-- `Controller` : MVC 컨트롤러 클래스
-- `Helper` : 헬퍼 클래스 및 유틸리티 함수
-- `InGame` : 인게임 세션통신 관련 클래스 및 파일
-- `Model` : 데이터 모델 클래스
-- `SharedCodeLibrary` : 공유 코드 라이브러리
-- `View` : 사용자 인터페이스 뷰 클래스
+- `Controller`: MVC 컨트롤러 클래스
+- `Helper`: 헬퍼 클래스 및 유틸리티 함수
+- `InGame`: 인게임 세션 통신 관련 클래스 및 파일
+- `Model`: 데이터 모델 클래스
+- `SharedCodeLibrary`: 공유 코드 라이브러리
+- `View`: 사용자 인터페이스 뷰 클래스
 
 # SharedCode
 
 ## 개요
-Client 프로젝트와 Server 프로젝트의 서로 공유하는 코드입니다.
+Client 프로젝트와 Server 프로젝트에서 서로 공유하는 코드입니다.
 
-## 주요기능
+## 주요 기능
 
-- **프로토콜** 서버와 클라이언트간의 공유하는 프로토콜입니다.
-- **HttpCommand** 서버와 클라이언트간의 WebRequest관련 로직 작성시 사용되는 명령입니다.
-- **Packet** 서버와 클라이언트가 사용하는 패킷구조 관련 클래스입니다.
-- **기타Model** 서버와 클라이언트가 공유되는 모델구조입니다. 주로 아이템이나 유저데이터등이 있습니다
+- **프로토콜**: 서버와 클라이언트 간의 공유하는 프로토콜입니다.
+- **HttpCommand**: 서버와 클라이언트 간의 WebRequest 관련 로직 작성 시 사용되는 명령입니다.
+- **Packet**: 서버와 클라이언트가 사용하는 패킷 구조 관련 클래스입니다.
+- **기타 모델**: 서버와 클라이언트가 공유되는 모델 구조로, 주로 아이템이나 유저 데이터 등을 포함합니다.
 
-전체 프로젝트 기능
+## 전체 프로젝트 기능 요약
 
 - Redis 서버 통합 및 초기화 구현
-- http프로토콜로 주요 서비스 및 리포지토리 클래스 작성
-- 웹소켓으로 채팅시스템, 매칭시스템 구현
-- 인게임 TCP 소켓 실시간통신 구현
+- HTTP 프로토콜로 주요 서비스 및 리포지토리 클래스 작성
+- WebSocket으로 채팅 시스템 및 매칭 시스템 구현
+- 인게임 TCP 소켓 실시간 통신 구현
 - Swagger를 통한 API 문서화 설정
-- 로그인, 길드(http통신)
-- 매칭, 채팅(웹소켓통신)
-- 인게임(tcp소켓통신)
+- 로그인 및 길드 관리 (HTTP 통신)
+- 매칭 및 채팅 (WebSocket 통신)
+- 인게임 (TCP 소켓 통신)
 
-설명
- 롤 아레나를 재밌게 한 기억이 있어 참고하여 기초틀만 작업해보았습니다.
+## 설명
+롤 아레나를 재밌게 한 기억이 있어 참고하여 기초 틀만 작업해보았습니다.
