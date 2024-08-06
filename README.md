@@ -5,10 +5,12 @@ Server 프로젝트는 고성능 웹 서버를 구축하기 위해 설계된 애
 
 ## 주요 기능
 
-- **Redis 서버 통합**: 애플리케이션 시작 시 Redis 서버를 자동으로 시작하고 초기화합니다.
+- **Redis**: 애플리케이션 시작 시 Redis 서버를 자동으로 초기화합니다.
 - **다양한 서비스 및 리포지토리 패턴**: 여러 서비스 (`AccountService`, `ShopService`, `InventoryService`, `RankService`, `GuildService`, `SessionService`, `WebSocketChatService`, `WebSocketMatchService`, `WebSocketLoginService`)와 리포지토리를 싱글톤 패턴으로 DI 컨테이너에 등록하여 사용합니다.
+- **MySQL**: 서비스시 영구적으로 보관해야할 데이터들은 데이터테이블을 정규화하여 보관합니다.
+- **TCP실시간인게임통신**: 매칭시 세션을 생성하고 게임이 끝날 때 세션관련 자원을 Dispose하여 세션을 관리하도록 설정합니다.
+- **WebSocket**:매칭관련시스템과 채팅관련 시스템을 구현하였습니다.
 - **API 문서화 (Swagger)**: Swagger를 통해 API 문서를 자동으로 생성하고 관리합니다.
-- **미들웨어 구성**: 사용자 정의 미들웨어를 통해 요청 처리 파이프라인을 구성하여 확장성을 높입니다.
 
 ## 기술 스택
 
@@ -20,12 +22,9 @@ Server 프로젝트는 고성능 웹 서버를 구축하기 위해 설계된 애
 
 ## Server 디렉토리 구조
 
-- `appsettings.Development.json` : 개발 환경 설정 파일
-- `appsettings.json` : 기본 설정 파일
 - `Configuration` : 설정 관련 클래스 및 파일
 - `Controllers` : MVC 컨트롤러 클래스
 - `Helper` : 헬퍼 클래스 및 유틸리티 함수
-- `Middleware` : 미들웨어 클래스
 - `Model` : 데이터 모델 클래스
 - `Repository` : 데이터 저장소 클래스
 - `Service` : 서비스 클래스
@@ -88,7 +87,7 @@ Client 프로젝트와 Server 프로젝트의 서로 공유하는 코드입니�
 - **프로토콜** 서버와 클라이언트간의 공유하는 프로토콜입니다.
 - **HttpCommand** 서버와 클라이언트간의 WebRequest관련 로직 작성시 사용되는 명령입니다.
 - **Packet** 서버와 클라이언트가 사용하는 패킷구조 관련 클래스입니다.
-- **기타Model** 서버와 클라이언트가 공유되는 모델구조입니다. 주로 아이템이나 유저데이터관련등이 있습니다
+- **기타Model** 서버와 클라이언트가 공유되는 모델구조입니다. 주로 아이템이나 유저데이터등이 있습니다
 
 전체 프로젝트 기능
 
