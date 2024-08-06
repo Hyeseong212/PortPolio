@@ -85,3 +85,5 @@ Client/Library/ArtifactDB
 # Ignore bin and obj folders
 /bin/
 /[obj]/
+# Ignore UnityLockfile
+/Client/Temp/UnityLockfile
