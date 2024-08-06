@@ -1,4 +1,0 @@
-# Starting compiling SharedCodeLibrary.dll
-C:\Program Files\Unity\Hub\Editor\2020.3.48f1\Editor\Data\Tools\RoslynScripts\unity_csc.bat /noconfig @Temp/UnityTempFile-799250e5297b9964e89d805c09916a30
-# Starting compiling ClientAssembly.dll
-C:\Program Files\Unity\Hub\Editor\2020.3.48f1\Editor\Data\Tools\RoslynScripts\unity_csc.bat /noconfig @Temp/UnityTempFile-05324e1ef01dcd14bbf801d4f604a1b6

@@ -137,6 +137,14 @@
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
           "dependencies": {
+            "MessagePack": {
+              "target": "Package",
+              "version": "[2.5.172, )"
+            },
+            "MessagePack.Annotations": {
+              "target": "Package",
+              "version": "[2.5.172, )"
+            },
             "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",
