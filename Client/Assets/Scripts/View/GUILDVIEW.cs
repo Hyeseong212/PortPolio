@@ -87,11 +87,11 @@ public class GUILDVIEW : MonoBehaviour
         guildFindPanel.SetActive(false);
         guildCrewsPanel.SetActive(false);
 
-        if (Global.Instance.standbyInfo.userEntity.guildUID != -1)//길드가입되어있을경우
+        if (Global.Instance.StandbyInfo.UserEntity.GuildUID != -1)//길드가입되어있을경우
         {
             GetGuildInfoRequest getGuildInfoRequest = new GetGuildInfoRequest();
-            getGuildInfoRequest.GuildId = Global.Instance.standbyInfo.userEntity.guildUID;
-            StartCoroutine(WebAPIController.Instance.PostRequest<GetGuildInfoRequest>(Global.Instance.apiRequestUri + "Guild/GetGuildInfo", getGuildInfoRequest, WebGuildController.Instance.UpdateGuildInformationResponse));
+            getGuildInfoRequest.GuildId = Global.Instance.StandbyInfo.UserEntity.GuildUID;
+            StartCoroutine(WebAPIController.Instance.PostRequest<GetGuildInfoRequest>(Global.Instance.ApiRequestUri + "Guild/GetGuildInfo", getGuildInfoRequest, WebGuildController.Instance.UpdateGuildInformationResponse));
 
             createGuildName.gameObject.SetActive(false);
             GuildCreate.gameObject.SetActive(false);
@@ -128,8 +128,8 @@ public class GUILDVIEW : MonoBehaviour
     private void GuildResign()
     {
         GuildResignRequest guildResignRequest = new GuildResignRequest();
-        guildResignRequest.AccountId = Global.Instance.standbyInfo.userEntity.UserUID;
-        StartCoroutine(WebAPIController.Instance.PostRequest<GuildResignRequest>(Global.Instance.apiRequestUri + "Guild/GuildResign", guildResignRequest, WebGuildController.Instance.ProcessResignationResponse));
+        guildResignRequest.AccountId = Global.Instance.StandbyInfo.UserEntity.UserUID;
+        StartCoroutine(WebAPIController.Instance.PostRequest<GuildResignRequest>(Global.Instance.ApiRequestUri + "Guild/GuildResign", guildResignRequest, WebGuildController.Instance.ProcessResignationResponse));
     }
     private void FindGuild()
     {
@@ -141,7 +141,7 @@ public class GUILDVIEW : MonoBehaviour
 
         FindGuildRequest guildCreateRequest = new FindGuildRequest();
         guildCreateRequest.GuildName = findGuildNameTextPanel.text;
-        StartCoroutine(WebAPIController.Instance.PostRequest<FindGuildRequest>(Global.Instance.apiRequestUri + "Guild/GuildFind", guildCreateRequest, WebGuildController.Instance.RetrieveGuildNamesFromServerResponse));
+        StartCoroutine(WebAPIController.Instance.PostRequest<FindGuildRequest>(Global.Instance.ApiRequestUri + "Guild/GuildFind", guildCreateRequest, WebGuildController.Instance.RetrieveGuildNamesFromServerResponse));
     }
     public void UpdateGuildInfo(MyGuildInfo guildinfo)
     {
@@ -161,9 +161,9 @@ public class GUILDVIEW : MonoBehaviour
             go.GetComponentInChildren<Text>().text = guildinfo.Crew[i].CrewName;
         }
         GetGuildJoinRequest getGuildJoinRequest = new GetGuildJoinRequest();
-        getGuildJoinRequest.GuildId = Global.Instance.standbyInfo.guildInfo.guildUid;
+        getGuildJoinRequest.GuildId = Global.Instance.StandbyInfo.GuildInfo.GuildUid;
 
-        StartCoroutine(WebAPIController.Instance.PostRequest<GetGuildJoinRequest>(Global.Instance.apiRequestUri + "Guild/GetGuildJoinRequestInfo", getGuildJoinRequest, WebGuildController.Instance.OnGetGuildJoinResponse));
+        StartCoroutine(WebAPIController.Instance.PostRequest<GetGuildJoinRequest>(Global.Instance.ApiRequestUri + "Guild/GetGuildJoinRequestInfo", getGuildJoinRequest, WebGuildController.Instance.OnGetGuildJoinResponse));
     }
     public void FindedGuildSort(List<GuildInfo> guildInfos)
     {
@@ -172,11 +172,11 @@ public class GUILDVIEW : MonoBehaviour
             GameObject GuildNameObject = Instantiate(guildNameObject, guildNameContainer.transform);
             guildInfoObject.Add(GuildNameObject);
             GuildNameObject.SetActive(true);
-            GuildNameObject.GetComponentInChildren<Text>().text = guildInfos[i].guildName;
-            GuildNameObject.GetComponent<GuildProfile>().guildinfo = guildInfos[i];
+            GuildNameObject.GetComponentInChildren<Text>().text = guildInfos[i].GuildName;
+            GuildNameObject.GetComponent<GuildProfile>().Guildinfo = guildInfos[i];
             GuildNameObject.GetComponent<Button>().onClick.AddListener(delegate
             {
-                if (Global.Instance.standbyInfo.userEntity.guildUID != -1)//길드가 가입돼있을경우
+                if (Global.Instance.StandbyInfo.UserEntity.GuildUID != -1)//길드가 가입돼있을경우
                 {
                     PopupController.Instance.SetActivePopupWithMessage(POPUPTYPE.MESSAGE, true, "이미 가입한 길드가 있어 \n 가입신청을 넣을수 없습니다", null, null);
                 }
@@ -186,9 +186,9 @@ public class GUILDVIEW : MonoBehaviour
                     Action action = () =>
                     {
                         RequestingJoinGuildRequest requestingJoinGuildRequest = new RequestingJoinGuildRequest();
-                        requestingJoinGuildRequest.AccountId = Global.Instance.standbyInfo.userEntity.UserUID;
-                        requestingJoinGuildRequest.GuildId = GuildNameObject.GetComponent<GuildProfile>().guildinfo.guildUid;
-                        StartCoroutine(WebAPIController.Instance.PostRequest<RequestingJoinGuildRequest>(Global.Instance.apiRequestUri + "Guild/RequestingJoinGuild", requestingJoinGuildRequest, WebGuildController.Instance.OnGuildCreateResponse));
+                        requestingJoinGuildRequest.AccountId = Global.Instance.StandbyInfo.UserEntity.UserUID;
+                        requestingJoinGuildRequest.GuildId = GuildNameObject.GetComponent<GuildProfile>().Guildinfo.GuildUid;
+                        StartCoroutine(WebAPIController.Instance.PostRequest<RequestingJoinGuildRequest>(Global.Instance.ApiRequestUri + "Guild/RequestingJoinGuild", requestingJoinGuildRequest, WebGuildController.Instance.OnGuildCreateResponse));
                     };
                     PopupController.Instance.SetActivePopupWithMessage(POPUPTYPE.OKCANCEL, true, "가입 신청을 넣으시겠습니까?", action,null);
                 }
@@ -218,19 +218,19 @@ public class GUILDVIEW : MonoBehaviour
             Destroy(JoinRequestObject[i]);
         }
 
-        if(Global.Instance.standbyInfo.requestInfo.requestUserInfos.Count <= 0)
+        if(Global.Instance.StandbyInfo.RequestInfo.RequestUserInfos.Count <= 0)
         {
             return;
         }
 
-        for (int i = 0; i < Global.Instance.standbyInfo.requestInfo.requestUserInfos.Count; i++)
+        for (int i = 0; i < Global.Instance.StandbyInfo.RequestInfo.RequestUserInfos.Count; i++)
         {
             GameObject GuildNameObject = Instantiate(joinRequestBtn, joinRequestContainerObject.transform);
             JoinRequestObject.Add(GuildNameObject);
             GuildNameObject.SetActive(true);
             GuildNameObject.AddComponent<RequestUserInfo>();
-            GuildNameObject.GetComponent<RequestUserInfo>().AccountId = Global.Instance.standbyInfo.requestInfo.requestUserInfos[i].AccountId;
-            GuildNameObject.GetComponentInChildren<Text>().text = Global.Instance.standbyInfo.requestInfo.requestUserInfos[i].UserName;
+            GuildNameObject.GetComponent<RequestUserInfo>().AccountId = Global.Instance.StandbyInfo.RequestInfo.RequestUserInfos[i].AccountId;
+            GuildNameObject.GetComponentInChildren<Text>().text = Global.Instance.StandbyInfo.RequestInfo.RequestUserInfos[i].UserName;
             GuildNameObject.GetComponent<Button>().onClick.AddListener(delegate
             {
                 Action action = () =>
@@ -238,8 +238,8 @@ public class GUILDVIEW : MonoBehaviour
                     //여기에 허락 
                     GuildJoinOkRequest guildJoinOkRequest = new GuildJoinOkRequest();
                     guildJoinOkRequest.AccountId = GuildNameObject.GetComponent<RequestUserInfo>().AccountId;
-                    guildJoinOkRequest.GuildId = Global.Instance.standbyInfo.userEntity.guildUID;
-                    StartCoroutine(WebAPIController.Instance.PostRequest<GuildJoinOkRequest>(Global.Instance.apiRequestUri + "Guild/GuildJoinOK", guildJoinOkRequest, WebGuildController.Instance.OnGuildCreateResponse));
+                    guildJoinOkRequest.GuildId = Global.Instance.StandbyInfo.UserEntity.GuildUID;
+                    StartCoroutine(WebAPIController.Instance.PostRequest<GuildJoinOkRequest>(Global.Instance.ApiRequestUri + "Guild/GuildJoinOK", guildJoinOkRequest, WebGuildController.Instance.OnGuildCreateResponse));
                     Destroy(GuildNameObject);
                 };
                 //요청 팝업 띄우기
@@ -250,9 +250,9 @@ public class GUILDVIEW : MonoBehaviour
     public void GuildCreatePakcetToServer()
     {
         GuildCreateRequest guildCreateRequest = new GuildCreateRequest();
-        guildCreateRequest.Creator = Global.Instance.standbyInfo.userEntity.UserUID;
+        guildCreateRequest.Creator = Global.Instance.StandbyInfo.UserEntity.UserUID;
         guildCreateRequest.GuildName = createGuildName.text;
-        StartCoroutine(WebAPIController.Instance.PostRequest<GuildCreateRequest>(Global.Instance.apiRequestUri + "Guild/GuildCreate", guildCreateRequest, WebGuildController.Instance.OnGuildCreateResponse));
+        StartCoroutine(WebAPIController.Instance.PostRequest<GuildCreateRequest>(Global.Instance.ApiRequestUri + "Guild/GuildCreate", guildCreateRequest, WebGuildController.Instance.OnGuildCreateResponse));
     }
 
 

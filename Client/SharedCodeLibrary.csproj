@@ -59,6 +59,7 @@
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\HttpCommand\BaseHttpCommand.cs" />
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\HttpCommand\RankHttpCommand.cs" />
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\HttpCommand\AccountHttpCommand.cs" />
+    <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\Packet.cs" />
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.AssemblyInfo.cs" />
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\HttpCommand\SessionHttpCommand.cs" />
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\etcModel.cs" />
@@ -66,13 +67,10 @@
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\HttpCommand\ShopHttpCommand.cs" />
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\HttpCommand\GuildHttpCommand.cs" />
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\HttpCommand\InventoryHttpCommand.cs" />
-    <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\Packet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary.asmdef" />
     <None Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.csproj.FileListAbsolute.txt" />
-    <None Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\bin\Debug\netstandard2.0\SharedCodeLibrary.dll" />
-    <None Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.dll" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

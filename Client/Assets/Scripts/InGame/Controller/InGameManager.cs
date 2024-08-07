@@ -45,12 +45,12 @@ public class InGameManager : MonoBehaviour
     private void PrivateGameStart()
     {
         Packet packet = new Packet();
-        int length = 0x01 + Utils.GetLength(InGameSessionController.Instance.thisPlayerInfo.playerNum);
+        int length = 0x01 + Utils.GetLength(InGameSessionController.Instance.thisPlayerInfo.PlayerNum);
 
         packet.push((byte)InGameProtocol.GameInfo);
         packet.push(length);
         packet.push((byte)GameInfo.SetPlayerCharacterLevel);
-        packet.push(InGameSessionController.Instance.thisPlayerInfo.playerNum);
+        packet.push(InGameSessionController.Instance.thisPlayerInfo.PlayerNum);
 
         InGameTCPController.Instance.SendToInGameServer(packet);
     }
@@ -59,13 +59,13 @@ public class InGameManager : MonoBehaviour
     {
         var characterCam = FindObjectOfType<CameraFollow>();
         this.characterCam = characterCam.GetComponent<Camera>();
-        Global.Instance.StaticLog($"this PlayerNumber is {InGameSessionController.Instance.thisPlayerInfo.playerNum}");
-        selectedCharacter = characters[InGameSessionController.Instance.thisPlayerInfo.playerNum - 1];
+        Global.Instance.StaticLog($"this PlayerNumber is {InGameSessionController.Instance.thisPlayerInfo.PlayerNum}");
+        selectedCharacter = characters[InGameSessionController.Instance.thisPlayerInfo.PlayerNum - 1];
 
-        characterCam.target = players[InGameSessionController.Instance.thisPlayerInfo.playerNum - 1].transform;
+        characterCam.target = players[InGameSessionController.Instance.thisPlayerInfo.PlayerNum - 1].transform;
         for (int i = 0; i < players.Length; i++)
         {
-            if (InGameSessionController.Instance.thisPlayerInfo.playerNum != i + 1)
+            if (InGameSessionController.Instance.thisPlayerInfo.PlayerNum != i + 1)
             {
                 players[i].GetComponent<UnitMovement>().enabled = false;
                 players[i].GetComponent<AStarPathfinding>().enabled = false;

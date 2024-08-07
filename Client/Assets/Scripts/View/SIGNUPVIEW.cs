@@ -32,7 +32,7 @@ public class SIGNUPVIEW : MonoBehaviour
             NickName = nameInputfield.text
         };
 
-        StartCoroutine(WebAPIController.Instance.PostRequest<AccountCreateRequest>(Global.Instance.apiRequestUri + "Account/Create", CreateInfo, WebLoginController.Instance.OnAccountCreateResponse));
+        StartCoroutine(WebAPIController.Instance.PostRequest<AccountCreateRequest>(Global.Instance.ApiRequestUri + "Account/Create", CreateInfo, WebLoginController.Instance.OnAccountCreateResponse));
 
 
         //////////소켓 통신 (legacy)/////////

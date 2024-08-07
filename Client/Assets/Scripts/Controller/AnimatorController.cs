@@ -5,7 +5,7 @@ using System;
 
 public class AnimatorController : MonoBehaviour
 {
-    public CharacterStatus currentStatus
+    public CharacterStatus CurrentStatus
     {
         get { return _currentStatus; }
         set
@@ -32,7 +32,7 @@ public class AnimatorController : MonoBehaviour
 
         int length = 0;
 
-        if (currentStatus == CharacterStatus.ATTACK)
+        if (CurrentStatus == CharacterStatus.ATTACK)
         {
             length = 0x01 + 0x01 + Utils.GetLength(character.PlayerNum) + 0x04;
         }
@@ -44,15 +44,15 @@ public class AnimatorController : MonoBehaviour
         characterAnimation.push((byte)InGameProtocol.GameInfo);
         characterAnimation.push(length);
         characterAnimation.push((byte)GameInfo.CharacterAnimationStatus);
-        characterAnimation.push((byte)currentStatus);//애니메이션상태
+        characterAnimation.push((byte)CurrentStatus);//애니메이션상태
         characterAnimation.push((byte)character.PlayerNum);//어떤 캐릭터의
-        if (currentStatus == CharacterStatus.ATTACK)//만약 공격이면
+        if (CurrentStatus == CharacterStatus.ATTACK)//만약 공격이면
         {
             characterAnimation.push(character.Target.GetComponent<Character>().PlayerNum);//그타겟의 플레이어 넘버 보내기
         }
 
         InGameTCPController.Instance.SendToInGameServer(characterAnimation);
-        if (currentStatus == CharacterStatus.ATTACK)
+        if (CurrentStatus == CharacterStatus.ATTACK)
         {
             SetAttackSpeed(character.CharacterData.AttackRate + (character.Level - 1) * character.CharacterData.AttackRatePerLv);
         }
@@ -60,8 +60,8 @@ public class AnimatorController : MonoBehaviour
         {
             animator.speed = 1f; // 다른 상태에서는 기본 속도로 설정
         }
-        animator.SetInteger("animation", (int)currentStatus);
-        if(currentStatus == CharacterStatus.DAMAGED)
+        animator.SetInteger("animation", (int)CurrentStatus);
+        if(CurrentStatus == CharacterStatus.DAMAGED)
             HandleDamaged();
     }
     private void HandleDamaged()
@@ -73,7 +73,7 @@ public class AnimatorController : MonoBehaviour
     {
         // 대기 시간을 애니메이션 길이로 설정
         yield return wait;
-        currentStatus = CharacterStatus.IDLE;
+        CurrentStatus = CharacterStatus.IDLE;
     }
     public void SetAttackSpeed(float attackRate)
     {

@@ -58,12 +58,12 @@ public class InGameTCPController : MonoBehaviour
 
             Packet packet = new Packet();//접속했어 패킷
 
-            int length = 0x01 + Utils.GetLength(Global.Instance.standbyInfo.userEntity.UserUID);
+            int length = 0x01 + Utils.GetLength(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
             packet.push((byte)InGameProtocol.SessionInfo);
             packet.push(length);
             packet.push((byte)SessionInfo.SessionSyncOK);
-            packet.push(Global.Instance.standbyInfo.userEntity.UserUID);
+            packet.push(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
             SendToInGameServer(packet);
         }

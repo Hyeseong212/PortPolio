@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\Controller\AnimatorController.cs" />
     <Compile Include="Assets\Scripts\InGame\View\IngameMainView.cs" />
     <Compile Include="Assets\Scripts\Model\Enumeration.cs" />
+    <Compile Include="Assets\Scripts\InGame\Controller\InGameTCPController.cs" />
     <Compile Include="Assets\Scripts\InGame\Controller\TestTCPController.cs" />
     <Compile Include="Assets\Scripts\Helper\InGameSingleton.cs" />
     <Compile Include="Assets\Scripts\InGame\View\GameEndView.cs" />
@@ -98,12 +99,11 @@
     <Compile Include="Assets\Scripts\Controller\ViewController.cs" />
     <Compile Include="Assets\Scripts\View\LOGINVIEW.cs" />
     <Compile Include="Assets\Scripts\Controller\WebSocket\ChatController.cs" />
+    <Compile Include="Assets\Scripts\Controller\WebSocket\WebSocketController.cs" />
     <Compile Include="Assets\Scripts\View\GameStartView.cs" />
     <Compile Include="Assets\Scripts\InGame\Character\AStarPathfinding.cs" />
     <Compile Include="Assets\Scripts\MainFlow.cs" />
     <Compile Include="Assets\Scripts\Helper\Scripts\FowManager.cs" />
-    <Compile Include="Assets\Scripts\Controller\WebSocket\WebSocketController.cs" />
-    <Compile Include="Assets\Scripts\InGame\Controller\InGameTCPController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Scripts\ClientAssembly.asmdef" />

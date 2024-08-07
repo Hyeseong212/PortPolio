@@ -27,18 +27,18 @@ public class GameStartView : MonoBehaviour
     }
     private void SelectNormalGameStart()
     {
-        Global.Instance.standbyInfo.isMatchingNow = true;
-        Global.Instance.standbyInfo.gameType = GameType.Normal;
+        Global.Instance.StandbyInfo.IsMatchingNow = true;
+        Global.Instance.StandbyInfo.GameType = GameType.Normal;
 
         Packet packet = new Packet();
 
-        int length = 0x01 + 0x01 + Utils.GetLength(Global.Instance.standbyInfo.userEntity.UserUID);
+        int length = 0x01 + 0x01 + Utils.GetLength(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
         packet.push((byte)Protocol.Match);
         packet.push(length);
         packet.push((byte)MatchProtocol.MatchStart);
-        packet.push((byte)Global.Instance.standbyInfo.gameType);
-        packet.push(Global.Instance.standbyInfo.userEntity.UserUID);
+        packet.push((byte)Global.Instance.StandbyInfo.GameType);
+        packet.push(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
         WebSocketController.Instance.SendToServer(packet);
 
@@ -50,18 +50,18 @@ public class GameStartView : MonoBehaviour
     }
     private void SelectRankGameStart()
     {
-        Global.Instance.standbyInfo.isMatchingNow = true;
-        Global.Instance.standbyInfo.gameType = GameType.Rank;
+        Global.Instance.StandbyInfo.IsMatchingNow = true;
+        Global.Instance.StandbyInfo.GameType = GameType.Rank;
 
         Packet packet = new Packet();
 
-        int length = 0x01 + 0x01 + Utils.GetLength(Global.Instance.standbyInfo.userEntity.UserUID);
+        int length = 0x01 + 0x01 + Utils.GetLength(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
         packet.push((byte)Protocol.Match);
         packet.push(length);
         packet.push((byte)MatchProtocol.MatchStart);
-        packet.push((byte)Global.Instance.standbyInfo.gameType);
-        packet.push(Global.Instance.standbyInfo.userEntity.UserUID);
+        packet.push((byte)Global.Instance.StandbyInfo.GameType);
+        packet.push(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
         WebSocketController.Instance.SendToServer(packet);
 

@@ -64,8 +64,8 @@ public class WebGuildController : MonoBehaviour
 
         if (responseObject != null && responseObject.IsSuccess)
         {
-            Global.Instance.standbyInfo.userEntity.guildUID = -1;
-            Global.Instance.standbyInfo.guildInfo = new MyGuildInfo();
+            Global.Instance.StandbyInfo.UserEntity.GuildUID = -1;
+            Global.Instance.StandbyInfo.GuildInfo = new MyGuildInfo();
 
             GUILDVIEW guildView = FindObjectOfType<GUILDVIEW>(true);
 
@@ -87,12 +87,12 @@ public class WebGuildController : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(responseObject.GuildRequestInfo))
             {
-                Global.Instance.standbyInfo.requestInfo = JsonConvert.DeserializeObject<GuildJoinRequest>(responseObject.GuildRequestInfo);
+                Global.Instance.StandbyInfo.RequestInfo = JsonConvert.DeserializeObject<GuildJoinRequest>(responseObject.GuildRequestInfo);
                 GUILDVIEW guildView = FindObjectOfType<GUILDVIEW>(true);
                 guildView.JoinRequestSort();
                 GetGuildInfoRequest getGuildInfoRequest = new GetGuildInfoRequest();
-                getGuildInfoRequest.GuildId = Global.Instance.standbyInfo.userEntity.guildUID;
-                StartCoroutine(WebAPIController.Instance.PostRequest<GetGuildInfoRequest>(Global.Instance.apiRequestUri + "Guild/GetGuildInfo", getGuildInfoRequest, WebGuildController.Instance.UpdateGuildInformationResponse));
+                getGuildInfoRequest.GuildId = Global.Instance.StandbyInfo.UserEntity.GuildUID;
+                StartCoroutine(WebAPIController.Instance.PostRequest<GetGuildInfoRequest>(Global.Instance.ApiRequestUri + "Guild/GetGuildInfo", getGuildInfoRequest, WebGuildController.Instance.UpdateGuildInformationResponse));
             }
         }
         else
@@ -109,14 +109,14 @@ public class WebGuildController : MonoBehaviour
         {
             var guildInfo = JsonConvert.DeserializeObject<MyGuildInfo>(responseObject.MyGuildInfo);
 
-            Global.Instance.standbyInfo.guildInfo.guildName = guildInfo.guildName;
-            Global.Instance.standbyInfo.guildInfo = guildInfo;
+            Global.Instance.StandbyInfo.GuildInfo.GuildName = guildInfo.GuildName;
+            Global.Instance.StandbyInfo.GuildInfo = guildInfo;
 
             GUILDVIEW guildView = FindObjectOfType<GUILDVIEW>(true);
             guildView.SetActiveGuildFindPanel(false);
             guildView.SetActiveGuildCrewsPanel(true);
-            guildView.SetUserGuildName(Global.Instance.standbyInfo.guildInfo.guildName);
-            guildView.UpdateGuildInfo(Global.Instance.standbyInfo.guildInfo);
+            guildView.SetUserGuildName(Global.Instance.StandbyInfo.GuildInfo.GuildName);
+            guildView.UpdateGuildInfo(Global.Instance.StandbyInfo.GuildInfo);
         }
         else
         {

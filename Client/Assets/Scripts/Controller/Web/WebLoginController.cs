@@ -39,19 +39,19 @@ public class WebLoginController : MonoBehaviour
         if (responseObject != null && responseObject.IsSuccess)
         {
             // 로그인 성공 처리
-            Global.Instance.standbyInfo.userEntity = JsonConvert.DeserializeObject<UserEntity>(responseObject.Userentity);
+            Global.Instance.StandbyInfo.UserEntity = JsonConvert.DeserializeObject<UserEntity>(responseObject.Userentity);
             //Debug.Log("로긴 성공");
             WebSocketController.Instance.Init();
             ViewController.Instance.SetActiveView(VIEWTYPE.LOGIN, false);
 
             Packet packet = new Packet();
 
-            int length = 0x01 + Utils.GetLength(Global.Instance.standbyInfo.userEntity.UserUID);
+            int length = 0x01 + Utils.GetLength(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
             packet.push((byte)Protocol.Login);
             packet.push(length);
             packet.push((byte)LoginRequestType.LoginRequest);
-            packet.push(Global.Instance.standbyInfo.userEntity.UserUID);
+            packet.push(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
             WebSocketController.Instance.SendToServer(packet);
         }
@@ -93,17 +93,17 @@ public class WebLoginController : MonoBehaviour
         {
             // 로그인 성공 처리
             ViewController.Instance.SetActiveView(VIEWTYPE.LOGIN, true);
-            Global.Instance.standbyInfo.Reset();
+            Global.Instance.StandbyInfo.Reset();
             PopupController.Instance.SetActivePopupWithMessage(POPUPTYPE.MESSAGE, true, responseObject.Message, null, null);
 
             Packet packet = new Packet();
 
-            int length = 0x01 + Utils.GetLength(Global.Instance.standbyInfo.userEntity.UserUID);
+            int length = 0x01 + Utils.GetLength(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
             packet.push((byte)Protocol.Login);
             packet.push(length);
             packet.push((byte)LoginRequestType.LogoutRequest);
-            packet.push(Global.Instance.standbyInfo.userEntity.UserUID);
+            packet.push(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
             WebSocketController.Instance.SendToServer(packet);
 

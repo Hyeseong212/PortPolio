@@ -45,20 +45,20 @@ public class UnitMovement : MonoBehaviour
         if (isMoving)
         {
             HandleMovement();
-            m_animatorController.currentStatus = CharacterStatus.MOVE;
+            m_animatorController.CurrentStatus = CharacterStatus.MOVE;
             m_character.Target = null;
         }
-        else if (m_animatorController.currentStatus != CharacterStatus.ATTACK)
+        else if (m_animatorController.CurrentStatus != CharacterStatus.ATTACK)
         {
             StopMovement();
-            m_animatorController.currentStatus = CharacterStatus.IDLE;
+            m_animatorController.CurrentStatus = CharacterStatus.IDLE;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
             isMoving = false;
             StopMovement();
-            m_animatorController.currentStatus = CharacterStatus.IDLE;
+            m_animatorController.CurrentStatus = CharacterStatus.IDLE;
         }
     }
 

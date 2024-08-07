@@ -24,7 +24,7 @@ public class Character : MonoBehaviour
 
     private float rotationSpeed = 15f; // 회전 속도
     private bool isDead = false;
-    private List<GameObject> BulletPool = new List<GameObject>();
+    private List<GameObject> bulletPool = new List<GameObject>();
 
     private Material[] originalMaterials;
     private Renderer renderers;
@@ -56,7 +56,7 @@ public class Character : MonoBehaviour
     {
         if (Target != null)
         {
-            GetComponentInChildren<AnimatorController>().currentStatus = CharacterStatus.ATTACK;
+            GetComponentInChildren<AnimatorController>().CurrentStatus = CharacterStatus.ATTACK;
         }
         else
         {
@@ -66,7 +66,7 @@ public class Character : MonoBehaviour
 
     private void RotateTowardsTarget()
     {
-        if (Target != null && GetComponentInChildren<AnimatorController>().currentStatus == CharacterStatus.ATTACK)
+        if (Target != null && GetComponentInChildren<AnimatorController>().CurrentStatus == CharacterStatus.ATTACK)
         {
             Vector3 direction = (Target.transform.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -123,7 +123,7 @@ public class Character : MonoBehaviour
             Debug.LogError($"Character model with ID {characterID} could not be found in path: {modelPath}");
         }
         BulletTR = GetComponentInChildren<BulletTR>().gameObject;
-        GetComponentInChildren<AnimatorController>().currentStatus = CharacterStatus.IDLE;
+        GetComponentInChildren<AnimatorController>().CurrentStatus = CharacterStatus.IDLE;
         outlineSelected = new Material(Shader.Find("Draw/OutlineShaderSelected"));
         outlineClicked = new Material(Shader.Find("Draw/OutlineShaderClicked"));
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -187,7 +187,7 @@ public class Character : MonoBehaviour
             bulletStat.Damage = CharacterData.Attack + (CharacterData.AttackPerLv * (Level - 1));
             bulletStat.Init();
             bullet.SetActive(false);
-            BulletPool.Add(bullet);
+            bulletPool.Add(bullet);
         }
     }
     public void SetLevel(int level)
@@ -210,7 +210,7 @@ public class Character : MonoBehaviour
 
     public void FireBullet()
     {
-        GameObject bullet = BulletPool.Find(b => !b.activeInHierarchy);
+        GameObject bullet = bulletPool.Find(b => !b.activeInHierarchy);
         if (bullet != null)
         {
             bullet.SetActive(true);
@@ -280,7 +280,7 @@ public class Character : MonoBehaviour
     }
     public void Damaged(int ShooterPlayerNumber)
     {
-        GetComponentInChildren<AnimatorController>().currentStatus = CharacterStatus.DAMAGED;
+        GetComponentInChildren<AnimatorController>().CurrentStatus = CharacterStatus.DAMAGED;
 
         if(ShooterPlayerNumber == InGameManager.Instance.selectedCharacter.PlayerNum)
         {

@@ -54,9 +54,9 @@ public class MainView : MonoBehaviour
 
             //TCPController.Instance.SendToServer(packet);
 
-            Global.Instance.standbyInfo.gameType = GameType.Default;
+            Global.Instance.StandbyInfo.GameType = GameType.Default;
 
-            Global.Instance.standbyInfo.isMatchingNow = false;
+            Global.Instance.StandbyInfo.IsMatchingNow = false;
 
             ChangeGameQueueStatus();
         });
@@ -99,12 +99,12 @@ public class MainView : MonoBehaviour
         {
             var message = new Packet();
 
-            int length = 0x01 + Utils.GetLength(Global.Instance.standbyInfo.userEntity.UserUID) + Utils.GetLength(inputField.text);
+            int length = 0x01 + Utils.GetLength(Global.Instance.StandbyInfo.UserEntity.UserUID) + Utils.GetLength(inputField.text);
 
             message.push((byte)Protocol.Chat);
             message.push(length);
             message.push((byte)ChatStatus);
-            message.push(Global.Instance.standbyInfo.userEntity.UserUID);
+            message.push(Global.Instance.StandbyInfo.UserEntity.UserUID);
             message.push(inputField.text);
             WebSocketController.Instance.SendToServer(message);
             inputField.text = "";
@@ -145,16 +145,16 @@ public class MainView : MonoBehaviour
     public void Logout()
     {
         AccountLogoutRequest accountLogoutRequest = new AccountLogoutRequest();
-        accountLogoutRequest.AccountId = Global.Instance.standbyInfo.userEntity.UserUID;
-        StartCoroutine(WebAPIController.Instance.PostRequest<AccountLogoutRequest>(Global.Instance.apiRequestUri + "Account/Logout", accountLogoutRequest, WebLoginController.Instance.OnAccountLogoutResponse));
+        accountLogoutRequest.AccountId = Global.Instance.StandbyInfo.UserEntity.UserUID;
+        StartCoroutine(WebAPIController.Instance.PostRequest<AccountLogoutRequest>(Global.Instance.ApiRequestUri + "Account/Logout", accountLogoutRequest, WebLoginController.Instance.OnAccountLogoutResponse));
 
-        if (Global.Instance.standbyInfo.isMatchingNow)
+        if (Global.Instance.StandbyInfo.IsMatchingNow)
         {
-            Global.Instance.standbyInfo.gameType = GameType.Default;
+            Global.Instance.StandbyInfo.GameType = GameType.Default;
 
             MainView mainView = FindAnyObjectByType<MainView>();
 
-            Global.Instance.standbyInfo.isMatchingNow = false;
+            Global.Instance.StandbyInfo.IsMatchingNow = false;
 
             mainView.ChangeGameQueueStatus();
             List<Text> textObjects = mainView.ChatParentObject.GetComponentsInChildren<Text>().ToList();
@@ -171,7 +171,7 @@ public class MainView : MonoBehaviour
     }
     public void ChangeGameQueueStatus()
     {
-        if (Global.Instance.standbyInfo.isMatchingNow)
+        if (Global.Instance.StandbyInfo.IsMatchingNow)
         {
             stopwatch.Start();
 

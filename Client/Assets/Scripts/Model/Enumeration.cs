@@ -29,39 +29,39 @@ public enum GUILDCLASS
 [Serializable]
 public class LoginInfo
 {
-    public string id;
-    public string password;
+    public string Id;
+    public string Password;
     public LoginInfo()
     {
-        id = string.Empty;
-        password = string.Empty;
+        Id = string.Empty;
+        Password = string.Empty;
     }
 }
 [Serializable]
 public class SignUpInfo
 {
-    public string id;
-    public string pw;
-    public string name;
+    public string Id;
+    public string Pw;
+    public string Name;
     public SignUpInfo()
     {
-        id = string.Empty;
-        pw = string.Empty;
-        name = string.Empty;
+        Id = string.Empty;
+        Pw = string.Empty;
+        Name = string.Empty;
     }
 }
 [Serializable]
 public class StandbyInfo
 {
-    public UserEntity userEntity;
-    public MyGuildInfo guildInfo;
-    public GuildJoinRequest requestInfo;
-    public IPEndPoint sessionIPEndPoint;
+    public UserEntity UserEntity;
+    public MyGuildInfo GuildInfo;
+    public GuildJoinRequest RequestInfo;
+    public IPEndPoint SessionIPEndPoint;
     public int SelectedCharacterId;
 
-    public GameType gameType;
+    public GameType GameType;
 
-    public bool isMatchingNow; 
+    public bool IsMatchingNow; 
 
     public StandbyInfo()
     {
@@ -69,23 +69,23 @@ public class StandbyInfo
     }
     public void Reset()
     {
-        sessionIPEndPoint = new IPEndPoint(0,0);
-        userEntity = new UserEntity();
-        guildInfo = new MyGuildInfo();
-        requestInfo = new GuildJoinRequest();
-        isMatchingNow = false;
-        gameType = GameType.Default;
+        SessionIPEndPoint = new IPEndPoint(0,0);
+        UserEntity = new UserEntity();
+        GuildInfo = new MyGuildInfo();
+        RequestInfo = new GuildJoinRequest();
+        IsMatchingNow = false;
+        GameType = GameType.Default;
         SelectedCharacterId = 0;
     }
 }
 [Serializable]
 public class GuildJoinRequest
 {
-    public List<RequestUserInfo> requestUserInfos;
+    public List<RequestUserInfo> RequestUserInfos;
 
     public GuildJoinRequest()
     {
-        requestUserInfos = new List<RequestUserInfo>();
+        RequestUserInfos = new List<RequestUserInfo>();
     }
 }
 [Serializable]
@@ -96,30 +96,30 @@ public class RequestUserInfo : MonoBehaviour
 }
 public class MessageInfo
 {
-    public int idx;
-    public string message;
+    public int Idx;
+    public string Message;
 }
 [Serializable]
 public class GuildInfo
 {
-    public long guildUid;
-    public string guildName;
+    public long GuildUid;
+    public string GuildName;
     public GuildInfo()
     {
-        guildUid = long.MinValue;
-        guildName = string.Empty;
+        GuildUid = long.MinValue;
+        GuildName = string.Empty;
     }
 }
 [Serializable]
 public class MyGuildInfo
 {
-    public long guildUid;
-    public string guildName;
+    public long GuildUid;
+    public string GuildName;
     public List<GuildCrew> Crew;
     public MyGuildInfo()
     {
-        guildUid = long.MinValue;
-        guildName = string.Empty;
+        GuildUid = long.MinValue;
+        GuildName = string.Empty;
         Crew = new List<GuildCrew>();
     }
 }
@@ -144,7 +144,7 @@ public class UserEntity
     public string SessionId;
     public string Userid;
     public string UserPW;
-    public long guildUID;
+    public long GuildUID;
     public UserEntity()
     {
         UserUID = long.MinValue;
@@ -152,54 +152,54 @@ public class UserEntity
         SessionId = string.Empty;
         Userid = string.Empty;
         UserPW = string.Empty;
-        guildUID = 0;
+        GuildUID = 0;
     }
 }
 [Serializable]
 public class InGameSessionInfo
 {
-    public int playerNum;
-    public bool isPlayerInfoOK;
-    public bool isSyncOK;
-    public bool isLoadingOK;
-    public bool isAllPlayerLoadingOK;
-    public List<OpponentInfo> opponentInfos;
+    public int PlayerNum;
+    public bool IsPlayerInfoOK;
+    public bool IsSyncOK;
+    public bool IsLoadingOK;
+    public bool IsAllPlayerLoadingOK;
+    public List<OpponentInfo> OpponentInfos;
     public InGameSessionInfo()
     {
-        playerNum = 2;
-        isPlayerInfoOK = false;
-        isSyncOK = false;
-        isLoadingOK = false;
-        opponentInfos = new List<OpponentInfo>();
+        PlayerNum = 2;
+        IsPlayerInfoOK = false;
+        IsSyncOK = false;
+        IsLoadingOK = false;
+        OpponentInfos = new List<OpponentInfo>();
     }
 }
 [Serializable]
 public class OpponentInfo
 {
     public long OpponentUid { get; set; }
-    public Vector3 pos { get; set; }
-    public Quaternion rotation { get; set; }
+    public Vector3 Pos { get; set; }
+    public Quaternion Rotation { get; set; }
     public float HP { get; set; }
     public float MP { get; set; }
-    public bool isHit { get; set; }
+    public bool IsHit { get; set; }
 }
 public class CharacterStore
 {
     public int CharacterId { get; set; }
-    public string? CharacterName { get; set; }
+    public string CharacterName { get; set; }
     public long Price { get; set; }
 }
 public class Item
 {
     public int ItemId { get; set; }
-    public string? ItemName { get; set; }
+    public string ItemName { get; set; }
     public long Price { get; set; }
 }
 public class MessageModel
 {
-    public string? TYPE { get; set; }
+    public string TYPE { get; set; }
     public int MessageCode { get; set; }
-    public string? Message { get; set; }
+    public string Message { get; set; }
 }
 public class RankRating
 {

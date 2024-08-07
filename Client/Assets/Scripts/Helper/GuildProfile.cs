@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class GuildProfile : MonoBehaviour
 {
-    public GuildInfo guildinfo = new GuildInfo(); 
+    public GuildInfo Guildinfo = new GuildInfo(); 
 }

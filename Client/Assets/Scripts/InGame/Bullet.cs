@@ -3,23 +3,20 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour
 {
+    public bool IsHit;
+    public float HitYOffset = 0.5f;
     public float Damage;
+    public float Speed;
     public GameObject Shooter;
     public GameObject Target;
-    public float Speed;
-    public bool IsHit;
     public GameObject flash; // 총알 발사 이펙트 프리팹
     public GameObject hit; // 타겟 적중 이펙트 프리팹
-
     public GameObject flashInstance;
     public GameObject hitInstance;
-    private Coroutine targetingCoroutine;
-
     public GameObject BulletPool;
 
+    private Coroutine targetingCoroutine;
     private GameObject BulletTR;
-
-    public float HitYOffset = 0.5f;
     public void Init()
     {
         // 이펙트 인스턴스를 미리 생성하고 비활성화

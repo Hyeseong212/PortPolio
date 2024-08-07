@@ -41,12 +41,12 @@ public class MatchingController : MonoBehaviour
                 {
                     Packet packet = new Packet();
 
-                    int length = 0x01 + 0x01 + Utils.GetLength(Global.Instance.standbyInfo.userEntity.UserUID);
+                    int length = 0x01 + 0x01 + Utils.GetLength(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
                     packet.push((byte)Protocol.Match);
                     packet.push(length);
                     packet.push((byte)MatchProtocol.GameAccept);
-                    packet.push(Global.Instance.standbyInfo.userEntity.UserUID);
+                    packet.push(Global.Instance.StandbyInfo.UserEntity.UserUID);
 
                     WebSocketController.Instance.SendToServer(packet);
 
@@ -54,9 +54,9 @@ public class MatchingController : MonoBehaviour
                 };
                 Action Cancelaction = () =>
                 {
-                    Global.Instance.standbyInfo.gameType = GameType.Default;
+                    Global.Instance.StandbyInfo.GameType = GameType.Default;
 
-                    Global.Instance.standbyInfo.isMatchingNow = false;
+                    Global.Instance.StandbyInfo.IsMatchingNow = false;
 
                     MainView mainView = FindObjectOfType<MainView>(true);
 
@@ -82,11 +82,11 @@ public class MatchingController : MonoBehaviour
         int port = BitConverter.ToInt32(portBytes, 0);
 
         // sessionIPEndPoint ¼³Á¤
-        Global.Instance.standbyInfo.sessionIPEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+        Global.Instance.StandbyInfo.SessionIPEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
         Debug.Log($"Session IP: {ipAddress}, Port: {port}");
         WebSocketController.Instance.EnqueueDispatcher(() =>
         {
-            InGameTCPController.Instance.Init(Global.Instance.standbyInfo.sessionIPEndPoint.Address.ToString(), Global.Instance.standbyInfo.sessionIPEndPoint.Port);
+            InGameTCPController.Instance.Init(Global.Instance.StandbyInfo.SessionIPEndPoint.Address.ToString(), Global.Instance.StandbyInfo.SessionIPEndPoint.Port);
         });
     }
 }

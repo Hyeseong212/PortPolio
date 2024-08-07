@@ -81,8 +81,8 @@ public class CharacterDataManager : MonoBehaviour
         }
         else
         {
-            return null;
             Debug.LogError($"Bullet prefab with ID {bulletId} not found at path: {bulletPath}");
+            return null;
         }
     }
 }

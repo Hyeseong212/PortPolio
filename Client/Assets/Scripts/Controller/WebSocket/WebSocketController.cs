@@ -30,7 +30,7 @@ public class WebSocketController : MonoBehaviour
     public void Init()
     {
         Debug.Log("WebSocketController Init Complete");
-        ConnectToServer(Global.Instance.serverIP, 5000); // 서버 IP 주소 및 포트
+        ConnectToServer(Global.Instance.ServerIP, 5000); // 서버 IP 주소 및 포트
     }
 
     void OnApplicationQuit()

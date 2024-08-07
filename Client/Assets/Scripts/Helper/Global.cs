@@ -23,25 +23,25 @@ public class Global : MonoBehaviour
             return instance;
         }
     }
-    public StandbyInfo standbyInfo;
-    public List<MessageInfo> messageInfos;
-    public string apiRequestUri = "http://127.0.0.1:5000/";
+    public StandbyInfo StandbyInfo;
+    public List<MessageInfo> MessageInfos;
+    public string ApiRequestUri = "http://127.0.0.1:5000/";
     //public string serverIP = "192.168.123.1";
-    public string serverIP = "127.0.0.1";
+    public string ServerIP = "127.0.0.1";
     //public string serverIP = "192.168.219.100";
     public void Init()
     {
-        standbyInfo = new StandbyInfo();
+        StandbyInfo = new StandbyInfo();
         Debug.Log("Global Init Complete");
-        messageInfos = new List<MessageInfo>()
+        MessageInfos = new List<MessageInfo>()
         {
-            new MessageInfo() {  idx = 0, message = "중복된 ID입니다 다른아이디를 입력해주세요." },
-            new MessageInfo() {  idx = 1, message = "회원가입 성공" },
-            new MessageInfo() {  idx = 2, message = "가입 신청을 넣으시겠습니까?" },
-            new MessageInfo() {  idx = 3, message = "이미 가입한 길드가 있어 \n 가입신청을 넣을수 없습니다" },
-            new MessageInfo() {  idx = 4, message = "요청을 수락하시겠습니까?" },
-            new MessageInfo() {  idx = 5, message = "ID를 입력해주세요" },
-            new MessageInfo() {  idx = 6, message = "게임이 매칭 되었습니다!" }
+            new MessageInfo() {  Idx = 0, Message = "중복된 ID입니다 다른아이디를 입력해주세요." },
+            new MessageInfo() {  Idx = 1, Message = "회원가입 성공" },
+            new MessageInfo() {  Idx = 2, Message = "가입 신청을 넣으시겠습니까?" },
+            new MessageInfo() {  Idx = 3, Message = "이미 가입한 길드가 있어 \n 가입신청을 넣을수 없습니다" },
+            new MessageInfo() {  Idx = 4, Message = "요청을 수락하시겠습니까?" },
+            new MessageInfo() {  Idx = 5, Message = "ID를 입력해주세요" },
+            new MessageInfo() {  Idx = 6, Message = "게임이 매칭 되었습니다!" }
         };
     }
     public void StaticLog(object obj)

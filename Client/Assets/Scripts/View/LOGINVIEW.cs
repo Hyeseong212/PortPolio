@@ -67,7 +67,7 @@ public class LOGINVIEW : MonoBehaviour
             Password = PasswordInpuField.text
         };
 
-        StartCoroutine(WebAPIController.Instance.PostRequest<AccountLoginRequest>(Global.Instance.apiRequestUri + "Account/Login", loginInfo, WebLoginController.Instance.OnLoginResponse));
+        StartCoroutine(WebAPIController.Instance.PostRequest<AccountLoginRequest>(Global.Instance.ApiRequestUri + "Account/Login", loginInfo, WebLoginController.Instance.OnLoginResponse));
     }
 
     private void SignUp()

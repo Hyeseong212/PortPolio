@@ -27,7 +27,7 @@ public class LoadingView : MonoBehaviour
         }
 
         // Wait until isSyncOK is true
-        while (!InGameSessionController.Instance.thisPlayerInfo.isSyncOK)
+        while (!InGameSessionController.Instance.thisPlayerInfo.IsSyncOK)
         {
             yield return null; // Wait for the next frame
         }
@@ -46,7 +46,7 @@ public class LoadingView : MonoBehaviour
         }
 
         // Wait until isPlayerInfoOK is true
-        while (!InGameSessionController.Instance.thisPlayerInfo.isPlayerInfoOK)
+        while (!InGameSessionController.Instance.thisPlayerInfo.IsPlayerInfoOK)
         {
             yield return null; // Wait for the next frame
         }
@@ -65,7 +65,7 @@ public class LoadingView : MonoBehaviour
         }
 
         // Wait until isAllPlayerLoadingOK is true
-        while (!InGameSessionController.Instance.thisPlayerInfo.isAllPlayerLoadingOK)
+        while (!InGameSessionController.Instance.thisPlayerInfo.IsAllPlayerLoadingOK)
         {
             yield return null; // Wait for the next frame
         }
@@ -85,7 +85,7 @@ public class LoadingView : MonoBehaviour
 
         // Instantly fill to 100%
         loadingImg.fillAmount = 1f;
-        InGameSessionController.Instance.thisPlayerInfo.isLoadingOK = true;
+        InGameSessionController.Instance.thisPlayerInfo.IsLoadingOK = true;
         // Disable this GameObject
         InGameManager.Instance.GameStart();
         gameObject.SetActive(false);

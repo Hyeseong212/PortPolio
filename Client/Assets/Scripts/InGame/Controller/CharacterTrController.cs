@@ -27,12 +27,12 @@ public class CharacterTrController : MonoBehaviour
         }
     }
 
-    [SerializeField] List<GameObject> Characters = new List<GameObject>();
     public Dictionary<long, GameObject> UserTr = new Dictionary<long, GameObject>();
+    public float LerpSpeed = 20f;
     private Dictionary<long, Vector3> targetPositions = new Dictionary<long, Vector3>();
     private Dictionary<long, Quaternion> targetRotations = new Dictionary<long, Quaternion>();
-    GameObject ThisUserCharacter;
-    public float lerpSpeed = 20f;
+    [SerializeField] private List<GameObject> Characters = new List<GameObject>();
+    private GameObject thisUserCharacter;
 
     public void Init()
     {
@@ -49,12 +49,12 @@ public class CharacterTrController : MonoBehaviour
         }
         Characters.Reverse();
         UserTr.Clear();
-        if (InGameSessionController.Instance.thisPlayerInfo.playerNum == -1)
+        if (InGameSessionController.Instance.thisPlayerInfo.PlayerNum == -1)
         {
             return;
         }
-        ThisUserCharacter = Characters[InGameSessionController.Instance.thisPlayerInfo.playerNum - 1];
-        UserTr.Add(Global.Instance.standbyInfo.userEntity.UserUID, ThisUserCharacter);
+        thisUserCharacter = Characters[InGameSessionController.Instance.thisPlayerInfo.PlayerNum - 1];
+        UserTr.Add(Global.Instance.StandbyInfo.UserEntity.UserUID, thisUserCharacter);
         InGameManager.Instance.Init();
     }
     public void TestInit()
@@ -72,20 +72,20 @@ public class CharacterTrController : MonoBehaviour
         Characters.Reverse();
 
         UserTr.Clear();
-        if (InGameSessionController.Instance.thisPlayerInfo.playerNum == -1)
+        if (InGameSessionController.Instance.thisPlayerInfo.PlayerNum == -1)
         {
             return;
         }
-        ThisUserCharacter = Characters[InGameSessionController.Instance.thisPlayerInfo.playerNum - 1];
-        UserTr.Add(0, ThisUserCharacter);
+        thisUserCharacter = Characters[InGameSessionController.Instance.thisPlayerInfo.PlayerNum - 1];
+        UserTr.Add(0, thisUserCharacter);
         InGameManager.Instance.Init();
     }
     public void FixedUpdate()
     {
-        if (InGameSessionController.Instance.thisPlayerInfo.isPlayerInfoOK && ThisUserCharacter != null)
+        if (InGameSessionController.Instance.thisPlayerInfo.IsPlayerInfoOK && thisUserCharacter != null)
         {
             LerpingOpponentMove();
-            SendClientCharacterTr(ThisUserCharacter.transform.localPosition, ThisUserCharacter.transform.localRotation);
+            SendClientCharacterTr(thisUserCharacter.transform.localPosition, thisUserCharacter.transform.localRotation);
         }
     }
 
@@ -99,7 +99,7 @@ public class CharacterTrController : MonoBehaviour
         }
         else
         {
-            if (userUID != Global.Instance.standbyInfo.userEntity.UserUID)
+            if (userUID != Global.Instance.StandbyInfo.UserEntity.UserUID)
             {
                 float posX = BitConverter.ToSingle(data, 12);
                 float posY = BitConverter.ToSingle(data, 16);
@@ -125,7 +125,7 @@ public class CharacterTrController : MonoBehaviour
             long userId = kvp.Key;
             GameObject character = kvp.Value;
 
-            if (character != ThisUserCharacter)
+            if (character != thisUserCharacter)
             {
                 if (targetPositions.TryGetValue(userId, out Vector3 targetPosition) &&
                     targetRotations.TryGetValue(userId, out Quaternion targetRotation))
@@ -133,13 +133,13 @@ public class CharacterTrController : MonoBehaviour
                     character.transform.localPosition = Vector3.Lerp(
                         character.transform.localPosition,
                         targetPosition,
-                        lerpSpeed * Time.deltaTime
+                        LerpSpeed * Time.deltaTime
                     );
 
                     character.transform.localRotation = Quaternion.Slerp(
                         character.transform.localRotation,
                         targetRotation,
-                        lerpSpeed * Time.deltaTime
+                        LerpSpeed * Time.deltaTime
                     );
                 }
             }
@@ -148,12 +148,12 @@ public class CharacterTrController : MonoBehaviour
     private void SendClientCharacterTr(Vector3 clientChTr, Quaternion quaternion)
     {
         Packet packet = new Packet();
-        int length = 0x01 + 0x01 + Utils.GetLength(Global.Instance.standbyInfo.userEntity.UserUID) + Utils.GetLength(clientChTr.x) + Utils.GetLength(clientChTr.y) + Utils.GetLength(clientChTr.z)
+        int length = 0x01 + 0x01 + Utils.GetLength(Global.Instance.StandbyInfo.UserEntity.UserUID) + Utils.GetLength(clientChTr.x) + Utils.GetLength(clientChTr.y) + Utils.GetLength(clientChTr.z)
             + Utils.GetLength(quaternion.x) + Utils.GetLength(quaternion.y) + Utils.GetLength(quaternion.z) + Utils.GetLength(quaternion.w);
 
         packet.push((byte)InGameProtocol.CharacterTr);
         packet.push(length);
-        packet.push(Global.Instance.standbyInfo.userEntity.UserUID);
+        packet.push(Global.Instance.StandbyInfo.UserEntity.UserUID);
         packet.push(clientChTr.x);
         packet.push(clientChTr.y);
         packet.push(clientChTr.z);

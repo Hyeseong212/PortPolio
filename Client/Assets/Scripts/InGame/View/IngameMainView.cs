@@ -23,7 +23,7 @@ public class IngameMainView : MonoBehaviour
     {
         for (updateI = 0; updateI < InGameManager.Instance.characters.Count; updateI++)
         {
-            if (InGameManager.Instance.characters[updateI].PlayerNum == InGameSessionController.Instance.thisPlayerInfo.playerNum)
+            if (InGameManager.Instance.characters[updateI].PlayerNum == InGameSessionController.Instance.thisPlayerInfo.PlayerNum)
             {
                 HPGauge.fillAmount = InGameManager.Instance.characters[updateI].CurrentHP / InGameManager.Instance.characters[updateI].TotalHP;
                 MPGauge.fillAmount = InGameManager.Instance.characters[updateI].CurrentMP / InGameManager.Instance.characters[updateI].TotalMP;

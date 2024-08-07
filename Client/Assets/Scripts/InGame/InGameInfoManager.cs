@@ -97,12 +97,12 @@ public class InGameInfoManager : MonoBehaviour
         }
         Packet packet = new Packet();
 
-        int length = 0x01 + Utils.GetLength(InGameSessionController.Instance.thisPlayerInfo.playerNum);
+        int length = 0x01 + Utils.GetLength(InGameSessionController.Instance.thisPlayerInfo.PlayerNum);
 
         packet.push((byte)InGameProtocol.SessionInfo);
         packet.push(length);
         packet.push((byte)SessionInfo.LoadingOK);
-        packet.push(InGameSessionController.Instance.thisPlayerInfo.playerNum);
+        packet.push(InGameSessionController.Instance.thisPlayerInfo.PlayerNum);
 
         InGameTCPController.Instance.SendToInGameServer(packet);
     }
@@ -123,6 +123,6 @@ public class InGameInfoManager : MonoBehaviour
             var Targetcharacter = characters.FirstOrDefault(character => character.PlayerNum == targetNum);
             Animecharacter.Target = Targetcharacter.gameObject;
         }
-        Animecharacter.GetComponentInChildren<AnimatorController>().currentStatus = characterStatus;
+        Animecharacter.GetComponentInChildren<AnimatorController>().CurrentStatus = characterStatus;
     }
 }

@@ -10,12 +10,12 @@ public class TestCode : MonoBehaviour
     public int OpponentCharacterID = 0;
     void Start()
     {
-        InGameSessionController.Instance.thisPlayerInfo.playerNum = PlayerNumber;
-        Global.Instance.StaticLog($"PlayerNum : {InGameSessionController.Instance.thisPlayerInfo.playerNum }");
+        InGameSessionController.Instance.thisPlayerInfo.PlayerNum = PlayerNumber;
+        Global.Instance.StaticLog($"PlayerNum : {InGameSessionController.Instance.thisPlayerInfo.PlayerNum }");
         CharacterTrController.Instance.TestInit();
         for (int i = 0; i < 4; i++)
         {
-            if (InGameManager.Instance.characters[i].PlayerNum == InGameSessionController.Instance.thisPlayerInfo.playerNum)
+            if (InGameManager.Instance.characters[i].PlayerNum == InGameSessionController.Instance.thisPlayerInfo.PlayerNum)
             {
                 var character = CharacterDataManager.Instance.GetChracterData(CharacterID);
                 InGameManager.Instance.characters[i].SetCharacterModel(CharacterID);
