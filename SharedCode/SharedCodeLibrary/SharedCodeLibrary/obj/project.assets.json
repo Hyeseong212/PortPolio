@@ -818,24 +818,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\USER\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\10HOME_AHCI\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
+      "projectUniqueName": "C:\\Users\\10HOME_AHCI\\Desktop\\이직준비\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
       "projectName": "SharedCodeLibrary",
-      "projectPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
-      "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\obj\\",
+      "projectPath": "C:\\Users\\10HOME_AHCI\\Desktop\\이직준비\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
+      "packagesPath": "C:\\Users\\10HOME_AHCI\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\10HOME_AHCI\\Desktop\\이직준비\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\10HOME_AHCI\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -855,6 +850,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -887,7 +887,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

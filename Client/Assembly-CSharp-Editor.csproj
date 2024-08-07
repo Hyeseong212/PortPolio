@@ -747,10 +747,6 @@
       <Project>{51EDAD75-7133-9D38-CE99-B255294C4F67}</Project>
       <Name>ClientAssembly</Name>
     </ProjectReference>
-    <ProjectReference Include="SharedCodeLibrary.csproj">
-      <Project>{6CB3F128-3FEB-8F9E-0EF0-85F45BD4D209}</Project>
-      <Name>SharedCodeLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
