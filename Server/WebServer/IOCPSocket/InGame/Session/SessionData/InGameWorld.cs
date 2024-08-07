@@ -43,8 +43,8 @@ internal class InGameWorld : IDisposable
                 UsersCharacter[i].Quaternion = new Quaternion(BitConverter.ToSingle(data, 20), BitConverter.ToSingle(data, 24), BitConverter.ToSingle(data, 28), BitConverter.ToSingle(data, 32));
 
                 // 위치 로그 출력
-                //Console.WriteLine($"User {usersCharacter[i].uid} POS: X={usersCharacter[i].m_position.X}, Y={usersCharacter[i].m_position.Y}, Z={usersCharacter[i].m_position.Z}");
-                //Console.WriteLine($"User {usersCharacter[i].uid} Rotation: X={usersCharacter[i].m_quaternion.X}, Y={usersCharacter[i].m_quaternion.Y}, Z={usersCharacter[i].m_quaternion.Z}, W={usersCharacter[i].m_quaternion.W}");
+                //Logger.SetLogger(LOGTYPE.INFO, $"User {usersCharacter[i].uid} POS: X={usersCharacter[i].m_position.X}, Y={usersCharacter[i].m_position.Y}, Z={usersCharacter[i].m_position.Z}");
+                //Logger.SetLogger(LOGTYPE.INFO, $"User {usersCharacter[i].uid} Rotation: X={usersCharacter[i].m_quaternion.X}, Y={usersCharacter[i].m_quaternion.Y}, Z={usersCharacter[i].m_quaternion.Z}, W={usersCharacter[i].m_quaternion.W}");
             }
         }
     }
@@ -97,7 +97,7 @@ internal class InGameWorld : IDisposable
                 existingCharacter.CurrentMP = selectedCharacterData.TotalMP; // 처음에는 현재 MP를 총 MP로 설정
                 existingCharacter.CharacterData = selectedCharacterData;
 
-                Console.WriteLine($"Character updated: {existingCharacter.CharacterData.CharacterName}");
+                Logger.SetLogger(LOGTYPE.INFO, $"Character updated: {existingCharacter.CharacterData.CharacterName}");
             }
             else
             {
@@ -115,14 +115,14 @@ internal class InGameWorld : IDisposable
 
                 UsersCharacter.Add(newCharacter);
 
-                Console.WriteLine($"Character created: {newCharacter.CharacterData.CharacterName}");
+                Logger.SetLogger(LOGTYPE.INFO, $"Character created: {newCharacter.CharacterData.CharacterName}");
             }
 
             // 필요한 추가 처리...
         }
         else
         {
-            Console.WriteLine("Character data not found for the given CharacterId: " + selectedCharacterId);
+            Logger.SetLogger(LOGTYPE.INFO, "Character data not found for the given CharacterId: " + selectedCharacterId);
         }
 
         Packet packet = new Packet();
@@ -178,7 +178,7 @@ internal class InGameWorld : IDisposable
         if (shooterCharacter == null || targetCharacter == null)
         {
             // 해당 플레이어의 캐릭터를 찾을 수 없는 경우 처리
-            Console.WriteLine("Character not found for the given player number.");
+            Logger.SetLogger(LOGTYPE.INFO, "Character not found for the given player number.");
             return;
         }
 
@@ -204,7 +204,7 @@ internal class InGameWorld : IDisposable
         }
 
         // 로그 출력 (서버에서 디버깅용으로)
-        //Console.WriteLine($"Player {targetPlayerNumber} took {actualDamage} damage from player {shooterPlayerNumber}. Remaining HP: {targetCharacter.CurrentHP}");
+        //Logger.SetLogger(LOGTYPE.INFO, $"Player {targetPlayerNumber} took {actualDamage} damage from player {shooterPlayerNumber}. Remaining HP: {targetCharacter.CurrentHP}");
 
         Packet packet = new Packet();
 
@@ -282,7 +282,7 @@ internal class InGameWorld : IDisposable
         }
         else
         {
-            Console.WriteLine("Character not found for the given player number: " + playerNumber);
+            Logger.SetLogger(LOGTYPE.INFO, "Character not found for the given player number: " + playerNumber);
         }
     }
     private async Task HandleGameEndAsync()

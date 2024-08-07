@@ -18,6 +18,7 @@ public static class ClientManager
         _clients.TryRemove(accountId, out _);
     }
 
+
     public static async Task RemoveClientAsync(long accountId)
     {
         // 비동기 작업 예시

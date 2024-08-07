@@ -23,7 +23,7 @@ public class CThread
     // 스레드 생성 함수
     public bool Create(string name)
     {
-        Console.WriteLine(name + "Thread Created");
+        Logger.SetLogger(LOGTYPE.INFO, name + "Thread Created");
         ThreadName = name;
         try
         {
@@ -32,7 +32,7 @@ public class CThread
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{e.GetType().Name}: {e.Message}");
+            Logger.SetLogger(LOGTYPE.ERROR, $"{e.GetType().Name}: {e.Message}");
             return false;
         }
 
@@ -44,7 +44,7 @@ public class CThread
     public void Destroy()
     {
         bStopThread = true;
-        Console.WriteLine($"{ThreadName} 스레드가 종료되었습니다");
+        Logger.SetLogger(LOGTYPE.INFO, $"{ThreadName} 스레드가 종료되었습니다");
 
         if (thread != null)
         {
@@ -65,7 +65,7 @@ public class CThread
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{e.GetType().Name}: {e.Message}");
+            Logger.SetLogger(LOGTYPE.ERROR, $"{e.GetType().Name}: {e.Message}");
         }
     }
 
@@ -73,6 +73,6 @@ public class CThread
     protected virtual void ThreadUpdate()
     {
         Thread.Sleep(1000);
-        Console.WriteLine($"{ThreadName} 스레드가 실행 중입니다.");
+        Logger.SetLogger(LOGTYPE.INFO, $"{ThreadName} 스레드가 실행 중입니다.");
     }
 }

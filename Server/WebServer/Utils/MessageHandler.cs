@@ -9,7 +9,6 @@ public class MessageHandler
     private Dictionary<CompositeKey, string> _idToItem { get; set; }
     private readonly Timer _timer;
     private DateTime _lastModified;
-
     public MessageHandler(string csvPath)
     {
         _csvPath = csvPath;

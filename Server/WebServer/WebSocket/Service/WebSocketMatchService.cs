@@ -21,7 +21,7 @@ public class WebSocketMatchService
     {
         _sessionManager = sessionManager;
         _accountRepository = accountRepository;
-        Console.WriteLine($"{this.ToString()} init Complete");
+        Logger.SetLogger(LOGTYPE.INFO, $"{this.ToString()} init Complete");
         rankQueues = new Dictionary<Tier, Queue<PlayerInfo>>();
         foreach (Tier tier in Enum.GetValues(typeof(Tier)))
         {
@@ -114,7 +114,7 @@ public class WebSocketMatchService
                 }
                 else
                 {
-                    Console.WriteLine($"User {userUID} removed from normal queue.");
+                    Logger.SetLogger(LOGTYPE.INFO, $"User {userUID} removed from normal queue.");
                 }
             }
 
@@ -140,7 +140,7 @@ public class WebSocketMatchService
         lock (normalQueue)
         {
             normalQueue.Enqueue(playerInfo);
-            Console.WriteLine($"User {userUID} added to normal queue.");
+            Logger.SetLogger(LOGTYPE.INFO, $"User {userUID} added to normal queue.");
         }
     }
 
@@ -161,10 +161,10 @@ public class WebSocketMatchService
 
                 matchTypes[matchId] = GameType.Normal;
 
-                Console.WriteLine("Match found:");
+                Logger.SetLogger(LOGTYPE.INFO, "Match found:");
                 foreach (var player in pendingMatches[matchId])
                 {
-                    Console.WriteLine($"User {player.UserUID} matched.");
+                    Logger.SetLogger(LOGTYPE.INFO, $"User {player.UserUID} matched.");
                 }
 
                 // 매칭된 플레이어들에게 응답을 보내고 게임 세션 생성
@@ -197,7 +197,7 @@ public class WebSocketMatchService
             rankQueues[tier].Enqueue(playerInfo);
         }
 
-        Console.WriteLine($"User {userUID} added to {tier} rank queue.");
+        Logger.SetLogger(LOGTYPE.INFO, $"User {userUID} added to {tier} rank queue.");
     }
 
     private Task DeleteUserRankQueue(WebSocket clientSocket, byte[] data)
@@ -218,7 +218,7 @@ public class WebSocketMatchService
                     }
                     else
                     {
-                        Console.WriteLine($"User {userUID} removed from rank queue.");
+                        Logger.SetLogger(LOGTYPE.INFO, $"User {userUID} removed from rank queue.");
                     }
                 }
 
@@ -251,10 +251,10 @@ public class WebSocketMatchService
 
                     matchTypes[matchId] = GameType.Rank;
 
-                    Console.WriteLine($"Match found in {tierQueue.Key} tier:");
+                    Logger.SetLogger(LOGTYPE.INFO, $"Match found in {tierQueue.Key} tier:");
                     foreach (var player in pendingMatches[matchId])
                     {
-                        Console.WriteLine($"User {player.UserUID} matched.");
+                        Logger.SetLogger(LOGTYPE.INFO, $"User {player.UserUID} matched.");
                     }
 
                     // 매칭된 플레이어들에게 응답을 보냄
