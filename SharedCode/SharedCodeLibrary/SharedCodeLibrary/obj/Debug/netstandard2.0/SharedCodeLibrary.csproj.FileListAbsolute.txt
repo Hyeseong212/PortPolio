@@ -6,6 +6,5 @@ C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCod
 C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.AssemblyInfoInputs.cache
 C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.AssemblyInfo.cs
 C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.csproj.CoreCompileInputs.cache
-C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.sourcelink.json
 C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.dll
 C:\Users\USER\Desktop\MyProject\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.pdb

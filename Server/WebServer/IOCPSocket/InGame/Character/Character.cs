@@ -47,12 +47,3 @@ public class CharacterData
     public float TotalMP { get; set; }
     public float MPPerLv { get; set; }
 }
-public enum CharacterStatus
-{
-    NONE,
-    IDLE,
-    MOVE,
-    ATTACK,
-    DAMAGED,
-    DIE
-}

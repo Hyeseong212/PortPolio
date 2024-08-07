@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using SharedCode.Model;
 
 [Serializable]
 public class Character : MonoBehaviour

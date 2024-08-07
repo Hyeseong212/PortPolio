@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-public class Packet
+public class Packet2
 {
     public byte[] Buffer { get; private set; }
     public int Position { get; private set; }
@@ -9,7 +9,7 @@ public class Packet
 
     private const int buffersize = 4096;
 
-    public Packet()
+    public Packet2()
     {
         this.Buffer = new byte[buffersize];
     }

@@ -4,6 +4,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using MessagePack;
+using SharedCode.MessagePack;
 
 public class InGameTCPController : MonoBehaviour
 {
@@ -56,14 +58,15 @@ public class InGameTCPController : MonoBehaviour
 
             Debug.Log("Connected to server.");
 
-            Packet packet = new Packet();//접속했어 패킷
-
-            int length = 0x01 + Utils.GetLength(Global.Instance.standbyInfo.userEntity.UserUID);
-
-            packet.push((byte)InGameProtocol.SessionInfo);
-            packet.push(length);
-            packet.push((byte)SessionInfo.SessionSyncOK);
-            packet.push(Global.Instance.standbyInfo.userEntity.UserUID);
+            var packet = new Packet
+            {
+                Protocol = (byte)InGameProtocol.SessionInfo,
+                Data = MessagePackSerializer.Serialize(new SessionSyncPacket
+                {
+                    SessionInfo = SessionInfo.SessionSyncOK,
+                    UserUID = Global.Instance.standbyInfo.userEntity.UserUID
+                })
+            };
 
             SendToInGameServer(packet);
         }
@@ -109,46 +112,18 @@ public class InGameTCPController : MonoBehaviour
 
     private void HandlePacket(byte[] buffer)
     {
-        byte protocol = buffer[0];
-        byte[] lengthBytes = new byte[4];
+        var packet = MessagePackSerializer.Deserialize<Packet>(buffer);
 
-        try
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                lengthBytes[i] = buffer[i + 1];
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError(ex.Message);
-        }
-
-        int length = BitConverter.ToInt32(lengthBytes, 0);
-        byte[] realData = new byte[length];
-
-        try
-        {
-            for (int i = 0; i < length; i++)
-            {
-                realData[i] = buffer[i + 5];
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError(ex.Message);
-        }
-
-        switch (protocol)
+        switch (packet.Protocol)
         {
             case (byte)InGameProtocol.CharacterTr:
-                CharacterTrController.Instance.ProcessUpdatePlayerPacket(realData);
+                CharacterTrController.Instance.ProcessUpdatePlayerPacket(packet.Data);
                 break;
             case (byte)InGameProtocol.SessionInfo:
-                InGameSessionController.Instance.ProcessSessionPacket(realData);
+                InGameSessionController.Instance.ProcessSessionPacket(packet.Data);
                 break;
             case (byte)InGameProtocol.GameInfo:
-                InGameInfoManager.Instance.ProcessInGameInfoPacket(realData);
+                InGameInfoManager.Instance.ProcessInGameInfoPacket(packet.Data);
                 break;
             default:
                 Debug.LogWarning("Unknown protocol received.");
@@ -156,13 +131,14 @@ public class InGameTCPController : MonoBehaviour
         }
     }
 
-    public void SendToInGameServer(Packet data)
+    public void SendToInGameServer<T>(T data)
     {
         try
         {
             if (stream != null)
             {
-                stream.Write(data.Buffer, 0, data.Position);
+                byte[] serializedData = MessagePackSerializer.Serialize(data);
+                stream.Write(serializedData, 0, serializedData.Length);
             }
         }
         catch (Exception e)

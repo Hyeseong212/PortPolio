@@ -1,149 +1,141 @@
 ﻿using SharedCode.Model;
 using System.Net.Sockets;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using MessagePack;
+using SharedCode.MessagePack;
 
-internal class SessionInfoManager
+internal class SessionInfoManager : IDisposable
 {
     public InGameSession InGameSession;
     public bool IsAllPlayerReady;
     public List<InGamePlayerInfo> InGamePlayerInfos;
+
     public SessionInfoManager(InGameSession inGameSession)
     {
         InGameSession = inGameSession;
         InGamePlayerInfos = new List<InGamePlayerInfo>();
     }
+
     public void ProcessSessionInfoPacket(byte[] realData, Socket client)
     {
-        if ((SessionInfo)realData[0] == SessionInfo.SessionSyncOK)
+        var packet = MessagePackSerializer.Deserialize<Packet>(realData);
+        if ((SessionInfo)packet.Data[0] == SessionInfo.SessionSyncOK)
         {
-            CheckAllPlayerSyncOK(realData, client);
+            CheckAllPlayerSyncOK(packet.Data, client);
         }
-        else if ((SessionInfo)realData[0] == SessionInfo.PlayerNum)
+        else if ((SessionInfo)packet.Data[0] == SessionInfo.PlayerNum)
         {
-            SendPlayerNumber(realData, client);
+            SendPlayerNumber(packet.Data, client);
         }
-        else if ((SessionInfo)realData[0] == SessionInfo.LoadingOK)
+        else if ((SessionInfo)packet.Data[0] == SessionInfo.LoadingOK)
         {
-            CheckAllPlayerLoadingOK(realData, client);
+            CheckAllPlayerLoadingOK(packet.Data, client);
         }
     }
+
     private void CheckAllPlayerLoadingOK(byte[] realData, Socket socket)
     {
         int playerNumber = BitConverter.ToInt32(realData.Skip(1).ToArray());
 
-        // InGamePlayerInfo에서 해당 플레이어 찾기
         var inGamePlayerInfo = InGamePlayerInfos.FirstOrDefault(p => p.PlayerNumber == playerNumber);
         if (inGamePlayerInfo != null)
         {
             inGamePlayerInfo.IsLoadingOK = true;
         }
-        // 여기에 모든 플레이어가 모두 연결되었는지 체크하는 로직
-        bool allPlayersLoading = true;
-        for (int i = 0; i < InGamePlayerInfos.Count; i++)
-        {
-            if (!InGamePlayerInfos[i].IsLoadingOK)
-            {
-                allPlayersLoading = false;
-                break;
-            }
-        }
+
+        bool allPlayersLoading = InGamePlayerInfos.All(p => p.IsLoadingOK);
 
         if (allPlayersLoading)
         {
-            // 모든 플레이어가 연결된 경우 수행할 동작
             OnAllPlayersLoadingOk();
         }
     }
 
     private void CheckAllPlayerSyncOK(byte[] userUid, Socket client)
     {
-        long Useruid = BitConverter.ToInt64(userUid.Skip(1).ToArray());
+        long userUidValue = BitConverter.ToInt64(userUid.Skip(1).ToArray());
 
-        // InGamePlayerInfo에서 해당 플레이어 찾기
-        var inGamePlayerInfo = InGamePlayerInfos.FirstOrDefault(p => p.UserUID == Useruid);
+        var inGamePlayerInfo = InGamePlayerInfos.FirstOrDefault(p => p.UserUID == userUidValue);
         if (inGamePlayerInfo != null)
         {
             inGamePlayerInfo.IsConnected = true;
         }
 
-        // PlayerInfo에서 해당 플레이어의 소켓 업데이트
-        if (InGameSession == null) return;
-        if (InGameSession.Users == null) return;
-        var playerInfo = InGameSession.Users.FirstOrDefault(p => p.UserUID == Useruid);
-        if (playerInfo != null)
+        if (InGameSession != null && InGameSession.Users != null)
         {
-            playerInfo.Socket = client;
-            InGameSession.SetSocket(playerInfo);
-        }
-
-        // 여기에 모든 플레이어가 모두 연결되었는지 체크하는 로직
-        bool allPlayersConnected = true;
-        for (int i = 0; i < InGamePlayerInfos.Count; i++)
-        {
-            if (!InGamePlayerInfos[i].IsConnected)
+            var playerInfo = InGameSession.Users.FirstOrDefault(p => p.UserUID == userUidValue);
+            if (playerInfo != null)
             {
-                allPlayersConnected = false;
-                break;
+                playerInfo.Socket = client;
+                InGameSession.SetSocket(playerInfo);
             }
         }
+
+        bool allPlayersConnected = InGamePlayerInfos.All(p => p.IsConnected);
 
         if (allPlayersConnected)
         {
-            // 모든 플레이어가 연결된 경우 수행할 동작
             OnAllPlayersConnected();
         }
     }
+
     private void OnAllPlayersConnected()
     {
         if (InGameSession == null) return;
-        Packet packet = new Packet();
 
-        int length = 0x01;
+        var packet = new Packet
+        {
+            Protocol = (byte)InGameProtocol.SessionInfo,
+            Data = new byte[] { (byte)SessionInfo.SessionSyncOK }
+        };
 
-        packet.push((byte)InGameProtocol.SessionInfo);
-        packet.push(length);
-        packet.push((byte)SessionInfo.SessionSyncOK);
-
-        InGameSession.SendToAllClient(packet);
+        var serializedData = MessagePackSerializer.Serialize(packet);
+        InGameSession.SendToAllClient(serializedData);
     }
+
     private void OnAllPlayersLoadingOk()
     {
         if (InGameSession == null) return;
-        Packet packet = new Packet();
 
-        int length = 0x01;
+        var packet = new Packet
+        {
+            Protocol = (byte)InGameProtocol.SessionInfo,
+            Data = new byte[] { (byte)SessionInfo.AllPlayerLoadingOK }
+        };
 
-        packet.push((byte)InGameProtocol.SessionInfo);
-        packet.push(length);
-        packet.push((byte)SessionInfo.AllPlayerLoadingOK);
-
+        var serializedData = MessagePackSerializer.Serialize(packet);
         IsAllPlayerReady = true;
 
-        InGameSession.SendToAllClient(packet);
+        InGameSession.SendToAllClient(serializedData);
     }
+
     private void SendPlayerNumber(byte[] uid, Socket client)
     {
         if (InGameSession == null) return;
-        long useruid = BitConverter.ToInt64(uid.Skip(1).ToArray());
-        for (int i = 0; i < InGamePlayerInfos.Count; i++)
+        long userUid = BitConverter.ToInt64(uid.Skip(1).ToArray());
+        var inGamePlayerInfo = InGamePlayerInfos.FirstOrDefault(p => p.UserUID == userUid);
+        if (inGamePlayerInfo != null)
         {
-            if (InGamePlayerInfos[i].UserUID == useruid)
+            var playerNumberPacket = new PlayerNumberPacket
             {
-                Packet packet = new Packet();
+                PlayerNumber = inGamePlayerInfo.PlayerNumber
+            };
 
-                int length = 0x01 + Utils.GetLength(InGamePlayerInfos[i].PlayerNumber);
+            var data = MessagePackSerializer.Serialize(playerNumberPacket);
+            var packet = new Packet
+            {
+                Protocol = (byte)InGameProtocol.SessionInfo,
+                Data = data
+            };
 
-                packet.push(((byte)InGameProtocol.SessionInfo));
-                packet.push(length);
-                packet.push(((byte)SessionInfo.PlayerNum));
-                packet.push(InGamePlayerInfos[i].PlayerNumber);
-
-                InGameSession.SendToClient(client, packet);
-            }
+            var serializedData = MessagePackSerializer.Serialize(packet);
+            InGameSession.SendToClient(client, serializedData);
         }
     }
-    private bool disposed = false;
 
-    // 기타 리소스들...
+    private bool disposed = false;
 
     public void Dispose()
     {
@@ -160,14 +152,9 @@ internal class SessionInfoManager
 
         if (disposing)
         {
-            // 관리되는 리소스 해제
-            // 예: 데이터 리스트 클리어, 이벤트 핸들러 제거 등
             InGamePlayerInfos.Clear();
             InGameSession = null;
         }
-
-        // 관리되지 않는 리소스 해제
-        // 필요한 경우 추가
 
         disposed = true;
     }

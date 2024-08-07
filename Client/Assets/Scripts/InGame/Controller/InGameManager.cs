@@ -1,9 +1,9 @@
 using Rito.FogOfWar;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using MessagePack;
+using SharedCode.MessagePack;
 
 public class InGameManager : MonoBehaviour
 {
@@ -42,15 +42,21 @@ public class InGameManager : MonoBehaviour
     {
         Invoke("PrivateGameStart", 1f);
     }
+
     private void PrivateGameStart()
     {
-        Packet packet = new Packet();
-        int length = 0x01 + Utils.GetLength(InGameSessionController.Instance.thisPlayerInfo.playerNum);
+        var playerNum = InGameSessionController.Instance.thisPlayerInfo.playerNum;
 
-        packet.push((byte)InGameProtocol.GameInfo);
-        packet.push(length);
-        packet.push((byte)GameInfo.SetPlayerCharacterLevel);
-        packet.push(InGameSessionController.Instance.thisPlayerInfo.playerNum);
+        var levelPacket = new SetPlayerCharacterLevelPacket
+        {
+            PlayerNum = playerNum
+        };
+
+        var packet = new Packet
+        {
+            Protocol = (byte)InGameProtocol.GameInfo,
+            Data = MessagePackSerializer.Serialize(levelPacket)
+        };
 
         InGameTCPController.Instance.SendToInGameServer(packet);
     }
@@ -73,26 +79,27 @@ public class InGameManager : MonoBehaviour
             }
         }
     }
+
     private void FixedUpdate()
     {
         for (int i = 0; i < characters.Count; i++)
         {
-            // PlayerStatusBar[i].transform을 현재 Character 화면 위치에 따라 움직이게 함
-            Vector3 screenPos = characterCam.WorldToScreenPoint(characters[i].transform.position + Vector3.up * 2.5f); // Adjust the height offset as needed
+            Vector3 screenPos = characterCam.WorldToScreenPoint(characters[i].transform.position + Vector3.up * 2.5f);
             PlayerStatusBar[i].transform.position = screenPos;
 
             PlayerHPBar[i].fillAmount = characters[i].CurrentHP / characters[i].TotalHP;
             PlayerMPBar[i].fillAmount = characters[i].CurrentMP / characters[i].TotalMP;
         }
     }
+
     void Update()
     {
-        if(characterCam == null)
+        if (characterCam == null)
         {
             return;
         }
 
-        if (Input.GetMouseButtonDown(0)) // 마우스 왼쪽 버튼 클릭 시
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = characterCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -110,13 +117,12 @@ public class InGameManager : MonoBehaviour
                     targetedCharacter = clickedCharacter;
                     targetedCharacter.ApplyOutlineShader(targetedCharacter.outlineClicked);
 
-                    // 클릭된 캐릭터가 공격하게 함
                     selectedCharacter.Target = targetedCharacter.gameObject;
                     selectedCharacter.Attack();
                 }
             }
         }
-        if (Input.GetMouseButtonDown(1)) // 마우스 왼쪽 버튼 클릭 시
+        if (Input.GetMouseButtonDown(1))
         {
             Ray ray = characterCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

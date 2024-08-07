@@ -190,4 +190,13 @@ namespace SharedCode.Model
             IsLoadingOK = false;
         }
     }
+    public enum CharacterStatus
+    {
+        NONE,
+        IDLE,
+        MOVE,
+        ATTACK,
+        DAMAGED,
+        DIE
+    }
 }

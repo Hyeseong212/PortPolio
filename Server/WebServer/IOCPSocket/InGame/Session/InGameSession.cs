@@ -1,7 +1,15 @@
-﻿using System.Collections.Concurrent;
-using System.Net.Sockets;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net;
+using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
+using SharedCode.MessagePack;
+using MessagePack;
 using SharedCode.Model;
+using System.Numerics;
+
 public class InGameSession : IDisposable
 {
     public long SessionId { get; private set; }
@@ -59,12 +67,13 @@ public class InGameSession : IDisposable
         GameRoomEndPoint = gameRoomEndPoint;
 
         Logger.SetLogger(LOGTYPE.INFO, $"Session {SessionId} started on IP {localIP}, port {GameRoomEndPoint.Port}");
-        Logger.SetLogger(LOGTYPE.INFO, $"Listening on {listenSocket.LocalEndPoint.ToString()}");
+        Logger.SetLogger(LOGTYPE.INFO, $"Listening on {listenSocket.LocalEndPoint}");
 
         // 리스닝 및 업데이트를 하나의 쓰레드에서 처리
         sessionThread = new Thread(RunSession);
         sessionThread.Start();
     }
+
     public async Task StartSessionAsync()
     {
         isRunning = true;
@@ -92,6 +101,7 @@ public class InGameSession : IDisposable
         // 세션이 종료될 때까지 대기
         await Task.Run(() => sessionEndedEvent.WaitOne());
     }
+
     private async Task AcceptAsync()
     {
         while (isRunning)
@@ -136,8 +146,9 @@ public class InGameSession : IDisposable
         character.PlayerNum = inGamePlayerInfo.PlayerNumber;
         world.UsersCharacter.Add(character);
 
-        // Logger.SetLogger(LOGTYPE.INFO$"Player {player.UserUID} added to session {SessionId}");
+        Logger.SetLogger(LOGTYPE.INFO, $"Player {player.UserUID} added to session {SessionId}");
     }
+
     public async Task AddPlayerAsync(PlayerInfo player)
     {
         Users.Add(player);
@@ -158,6 +169,7 @@ public class InGameSession : IDisposable
 
         await Task.CompletedTask; // 실제 비동기 작업으로 대체
     }
+
     public void SetSocket(PlayerInfo player)
     {
         // 클라이언트 소켓을 인게임 세션으로 넘기고, ReceiveAsync를 호출하여 인게임 세션에서 패킷을 받도록 함
@@ -295,47 +307,18 @@ public class InGameSession : IDisposable
 
     public void HandlePacket(Socket clientSocket, byte[] buffer, int offset, int count)
     {
-        byte protocol = buffer[0];
-        byte[] lengthBytes = new byte[4];
+        var packet = MessagePackSerializer.Deserialize<Packet>(buffer.Skip(offset).Take(count).ToArray());
 
-        try
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                lengthBytes[i] = buffer[i + 1];
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.SetLogger(LOGTYPE.ERROR, ex.Message);
-        }
-
-        int length = BitConverter.ToInt32(lengthBytes, 0);
-        count -= 5;
-        byte[] realData = new byte[length];
-
-        try
-        {
-            for (int i = 0; i < count; i++)
-            {
-                realData[i] = buffer[i + 5];
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.SetLogger(LOGTYPE.ERROR, ex.Message);
-        }
-
-        switch (protocol)
+        switch (packet.Protocol)
         {
             case (byte)InGameProtocol.SessionInfo:
-                sessionInfoMng.ProcessSessionInfoPacket(realData, clientSocket);
+                sessionInfoMng.ProcessSessionInfoPacket(packet.Data, clientSocket);
                 break;
             case (byte)InGameProtocol.CharacterTr:
-                world.UpdatePlayerTR(realData);
+                world.UpdatePlayerTR(packet.Data);
                 break;
             case (byte)InGameProtocol.GameInfo:
-                world.UpdatePlayerDataInfo(realData);
+                world.UpdatePlayerDataInfo(packet.Data);
                 break;
             default:
                 break;
@@ -353,7 +336,7 @@ public class InGameSession : IDisposable
 
         Users.RemoveAll(user => user.Socket == clientSocket);
 
-        if (Users.Count <= 0)//만약 접속자가 0명이면 일단 지금은 테스트를 위해서 사람이없으니 세션을 정리해버리자
+        if (Users.Count <= 0) // 만약 접속자가 0명이면 세션을 정리
         {
             await sessionManager.RemoveSession(this.SessionId);
         }
@@ -377,26 +360,22 @@ public class InGameSession : IDisposable
         {
             foreach (var user in world.UsersCharacter)
             {
-                Packet characterTR = new Packet();
+                var characterTRPacket = new CharacterTRPacket
+                {
+                    UserUID = user.Uid,
+                    PlayerNumber = user.PlayerNum,
+                    Position = new Vector3(user.Position.X, user.Position.Y, user.Position.Z),
+                    Rotation = new Quaternion(user.Quaternion.X, user.Quaternion.Y, user.Quaternion.Z, user.Quaternion.W)
+                };
 
-                int length = 0x01 + Utils.GetLength(user.Uid) + Utils.GetLength(user.PlayerNum) +
-                    Utils.GetLength(user.Position.X) + Utils.GetLength(user.Position.Y) + Utils.GetLength(user.Position.Z) +
-                    Utils.GetLength(user.Quaternion.X) + Utils.GetLength(user.Quaternion.Y) + Utils.GetLength(user.Quaternion.Z) + Utils.GetLength(user.Quaternion.W);
-                characterTR.push((byte)InGameProtocol.CharacterTr);
-                characterTR.push(length);
-                characterTR.push((byte)SessionInfo.TransformInfo);
-                characterTR.push(user.Uid);
-                characterTR.push(user.PlayerNum);
-                characterTR.push(user.Position.X);
-                characterTR.push(user.Position.Y);
-                characterTR.push(user.Position.Z);
-                characterTR.push(user.Quaternion.X);
-                characterTR.push(user.Quaternion.Y);
-                characterTR.push(user.Quaternion.Z);
-                characterTR.push(user.Quaternion.W);
-                SendToAllClient(characterTR);
+                var packet = new Packet
+                {
+                    Protocol = (byte)InGameProtocol.CharacterTr,
+                    Data = MessagePackSerializer.Serialize(characterTRPacket)
+                };
 
-                // Logger.SetLogger(LOGTYPE.INFO, $"User {user.uid} Position: X={user.m_position.X}, Y={user.m_position.Y}, Z={user.m_position.Z}");
+                var serializedData = MessagePackSerializer.Serialize(packet);
+                SendToAllClient(serializedData);
             }
         }
     }
@@ -414,7 +393,7 @@ public class InGameSession : IDisposable
         throw new Exception("No network adapters with an IPv4 address in the system!");
     }
 
-    public void SendToClient(Socket clientSocket, Packet packet)
+    public void SendToClient(Socket clientSocket, byte[] data)
     {
         if (clientSocket == null)
             return;
@@ -423,7 +402,7 @@ public class InGameSession : IDisposable
 
         if (eventArgsPool.TryDequeue(out SocketAsyncEventArgs sendEventArg))
         {
-            sendEventArg.SetBuffer(packet.Buffer, 0, packet.Position);
+            sendEventArg.SetBuffer(data, 0, data.Length);
             sendEventArg.UserToken = clientSocket;
 
             if (!clientSocket.SendAsync(sendEventArg))
@@ -433,14 +412,14 @@ public class InGameSession : IDisposable
         }
     }
 
-    public void SendToAllClient(Packet packet)
+    public void SendToAllClient(byte[] data)
     {
         if (Users == null) return;
 
         foreach (var user in Users)
         {
             if (user.Socket == null) continue;
-            SendToClient(user.Socket, packet);
+            SendToClient(user.Socket, data);
         }
     }
 
@@ -509,5 +488,4 @@ public class InGameSession : IDisposable
     {
         Dispose(false);
     }
-
 }

@@ -1,3 +1,4 @@
+using MessagePack;
 using System.Net.WebSockets;
 using System.Text;
 
@@ -53,54 +54,31 @@ public static class WebSocketHandler
 
     private static async Task HandlePacket(WebSocket webSocket, byte[] buffer, int count)
     {
-        // 패킷 분석 로직
-        byte protocol = buffer[0];
-        byte[] lengthBytes = new byte[4];
-
         try
         {
-            for (int i = 0; i < 4; i++)
+            var packet = MessagePackSerializer.Deserialize<SharedCode.MessagePack.Packet>(buffer.Take(count).ToArray());
+
+            switch (packet.Protocol)
             {
-                lengthBytes[i] = buffer[i + 1];
+                case (byte)Protocol.Chat:
+                    if (_chatService == null) return;
+                    await _chatService.ProcessChatPacket(webSocket, packet.Data);
+                    break;
+                case (byte)Protocol.Match:
+                    if (_matchService == null) return;
+                    await _matchService.ProcessMatchPacket(webSocket, packet.Data);
+                    break;
+                case (byte)Protocol.Login:
+                    if (_loginService == null) return;
+                    await _loginService.ProcessLoginPacket(webSocket, packet.Data);
+                    break;
+                default:
+                    break;
             }
         }
         catch (Exception ex)
         {
             Logger.SetLogger(LOGTYPE.ERROR, ex.Message);
-        }
-
-        int length = BitConverter.ToInt32(lengthBytes, 0);
-        count -= 5;
-        byte[] realData = new byte[length];
-
-        try
-        {
-            for (int i = 0; i < count; i++)
-            {
-                realData[i] = buffer[i + 5];
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.SetLogger(LOGTYPE.ERROR, ex.Message);
-        }
-
-        switch (protocol)
-        {
-            case (byte)Protocol.Chat:
-                if (_chatService == null) return;
-                await _chatService.ProcessChatPacket(webSocket, realData);
-                break;
-            case (byte)Protocol.Match:
-                if (_matchService == null) return;
-                await _matchService.ProcessMatchPacket(webSocket, realData);
-                break;
-            case (byte)Protocol.Login:
-                if (_loginService == null) return;
-                await _loginService.ProcessLoginPacket(webSocket, realData);
-                break;
-            default:
-                break;
         }
     }
 }

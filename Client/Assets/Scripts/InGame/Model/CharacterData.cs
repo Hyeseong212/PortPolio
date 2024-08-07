@@ -20,12 +20,4 @@ public class CharacterData
     public float MPPerLv { get; set; }
     public GameObject Bullet { get; set; }
 }
-public enum CharacterStatus
-{
-    NONE,
-    IDLE,
-    MOVE,
-    ATTACK,
-    DAMAGED,
-    DIE
-}
+

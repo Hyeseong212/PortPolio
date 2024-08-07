@@ -1,6 +1,14 @@
+using MessagePack;
+using SharedCode.MessagePack;
 using SharedCode.Model;
+using System;
+using System.Collections.Concurrent;
+using System.Linq;
 using System.Net;
 using System.Net.WebSockets;
+using System.Threading;
+using System.Threading.Tasks;
+using WebServer.Model;
 using WebServer.Repository.Interface;
 
 public class WebSocketMatchService
@@ -271,42 +279,33 @@ public class WebSocketMatchService
 
     private async Task SendMatchResponse(WebSocket clientSocket)
     {
-        Packet packet = new Packet();
+        var packet = new MatchResponsePacket
+        {
+            Protocol = Protocol.Match,
+            MatchProtocol = MatchProtocol.GameMatched
+        };
 
-        int length = 0x01;
-
-        packet.push((byte)Protocol.Match);
-        packet.push(length);
-        packet.push((byte)MatchProtocol.GameMatched);
-
-        await ClientManager.SendToSocket(clientSocket, packet);
+        var serializedData = MessagePackSerializer.Serialize(packet);
+        await ClientManager.SendToSocket(clientSocket, serializedData);
     }
 
     private async Task SendGameRoomIP(WebSocket clientSocket, IPEndPoint gameRoomEndPoint)
     {
-        Packet packet = new Packet();
+        var packet = new GameRoomIPPacket
+        {
+            Protocol = Protocol.Match,
+            MatchProtocol = MatchProtocol.GameRoomIP,
+            IP = gameRoomEndPoint.Address.GetAddressBytes(),
+            Port = gameRoomEndPoint.Port
+        };
 
-        int length = 0x01 + 0x04 + 0x04;
-
-        packet.push((byte)Protocol.Match);
-        packet.push(length); // Protocol byte + IP address length (4 bytes) + port length (2 bytes)
-        packet.push((byte)MatchProtocol.GameRoomIP);
-
-        byte[] ipBytes = gameRoomEndPoint.Address.GetAddressBytes();
-        packet.push(ipBytes);
-
-        byte[] portBytes = BitConverter.GetBytes(gameRoomEndPoint.Port); // Port는 2 bytes
-        packet.push(gameRoomEndPoint.Port);
-
-        await ClientManager.SendToSocket(clientSocket, packet);
+        var serializedData = MessagePackSerializer.Serialize(packet);
+        await ClientManager.SendToSocket(clientSocket, serializedData);
     }
 
     private async Task<InGameSession> StartGameSession(long matchId, List<PlayerInfo> matchedPlayers, GameType gameType)
     {
         var gameSession = await _sessionManager.InGameSessionCreate(matchedPlayers, gameType);
-
-        // 메인 서버에서 해당 소켓을 해제하고 인게임 세션으로 전달
-        // 해제할필요없음.
 
         // 매칭 완료 후 pendingMatches에서 해당 매칭 제거
         pendingMatches.Remove(matchId);

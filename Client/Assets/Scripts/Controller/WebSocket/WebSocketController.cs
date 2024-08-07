@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using WebSocketSharp;
+using SharedCode.MessagePack;
+using MessagePack;
 
 public class WebSocketController : MonoBehaviour
 {
@@ -85,59 +87,34 @@ public class WebSocketController : MonoBehaviour
 
     private void HandlePacket(byte[] buffer)
     {
-        if(buffer.Length < 1)
+        if (buffer.Length < 1)
         {
             return;
         }
-        byte protocol = buffer[0];
-        byte[] lengthBytes = new byte[4];
 
-        try
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                lengthBytes[i] = buffer[i + 1];
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        var packet = MessagePackSerializer.Deserialize<Packet>(buffer);
 
-        int length = BitConverter.ToInt32(lengthBytes, 0);
-        byte[] realData = new byte[length];
-
-        try
-        {
-            for (int i = 0; i < length; i++)
-            {
-                realData[i] = buffer[i + 5];
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
-        switch (protocol)
+        switch (packet.Protocol)
         {
             case (byte)Protocol.Chat:
-                ChatController.Instance.ProcessChatPacket(realData, length);
+                ChatController.Instance.ProcessChatPacket(packet.Data);
                 break;
             case (byte)Protocol.Match:
-                MatchingController.Instance.ProcessMatchingPacket(realData, length);
+                MatchingController.Instance.ProcessMatchingPacket(packet.Data);
                 break;
             default:
                 break;
         }
     }
 
-    public void SendToServer(Packet data)
+    public void SendToServer<T>(T data)
     {
         try
         {
             if (ws != null && ws.IsAlive)
             {
-                ws.Send(data.Buffer);
+                byte[] serializedData = MessagePackSerializer.Serialize(data);
+                ws.Send(serializedData);
             }
         }
         catch (Exception e)
