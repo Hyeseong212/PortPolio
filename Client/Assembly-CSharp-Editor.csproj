@@ -335,9 +335,6 @@
     <Reference Include="Microsoft.NET.StringTools">
       <HintPath>Assets\Plugins\MessagePack\Microsoft.NET.StringTools.dll</HintPath>
     </Reference>
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>Assets\Plugins\MessagePack\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
       <HintPath>Assets\Plugins\MessagePack\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -349,6 +346,9 @@
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions">
       <HintPath>Assets\Plugins\MessagePack\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>Assets\Plugins\MessagePack\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
@@ -746,6 +746,10 @@
     <ProjectReference Include="ClientAssembly.csproj">
       <Project>{51EDAD75-7133-9D38-CE99-B255294C4F67}</Project>
       <Name>ClientAssembly</Name>
+    </ProjectReference>
+    <ProjectReference Include="SharedCodeLibrary.csproj">
+      <Project>{6CB3F128-3FEB-8F9E-0EF0-85F45BD4D209}</Project>
+      <Name>SharedCodeLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

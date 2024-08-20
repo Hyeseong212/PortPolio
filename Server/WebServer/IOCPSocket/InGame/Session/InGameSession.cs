@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Net;
 using SharedCode.Model;
+using Microsoft.Extensions.Logging.Abstractions;
 public class InGameSession : IDisposable
 {
     public long SessionId { get; private set; }
@@ -64,54 +65,6 @@ public class InGameSession : IDisposable
         // 리스닝 및 업데이트를 하나의 쓰레드에서 처리
         sessionThread = new Thread(RunSession);
         sessionThread.Start();
-    }
-    public async Task StartSessionAsync()
-    {
-        isRunning = true;
-        sessionEndedEvent.Reset();
-
-        // 모든 네트워크 인터페이스에서 수신 대기
-        string localIP = GetLocalIPAddress(); // 로컬 IP 주소로 설정
-        listenSocket.Bind(new IPEndPoint(IPAddress.Parse(localIP), 0)); // 특정 IP 주소와 임의의 포트 사용
-        listenSocket.Listen(100);
-        if (listenSocket.LocalEndPoint is not IPEndPoint gameRoomEndPoint)
-        {
-            throw new Exception("Listen socket or local endpoint is null.");
-        }
-        GameRoomEndPoint = gameRoomEndPoint;
-
-        Logger.SetLogger(LOGTYPE.INFO, $"Session {SessionId} started on IP {localIP}, port {GameRoomEndPoint.Port}");
-        Logger.SetLogger(LOGTYPE.INFO, $"Listening on {listenSocket.LocalEndPoint}");
-
-        // 비동기 소켓 연결 수락 시작
-        _ = AcceptAsync();
-
-        // 20Hz 업데이트 타이머
-        using Timer updateTimer = new Timer(UpdateGameWorld, null, 0, 25); // 50ms 간격으로 업데이트 (20Hz)
-
-        // 세션이 종료될 때까지 대기
-        await Task.Run(() => sessionEndedEvent.WaitOne());
-    }
-    private async Task AcceptAsync()
-    {
-        while (isRunning)
-        {
-            SocketAsyncEventArgs acceptEventArg = new SocketAsyncEventArgs();
-            acceptEventArg.Completed += AcceptCompleted;
-
-            if (listenSocket == null)
-            {
-                return;
-            }
-
-            bool pending = listenSocket.AcceptAsync(acceptEventArg);
-            if (!pending)
-            {
-                await Task.Run(() => AcceptCompleted(this, acceptEventArg));
-            }
-
-            await Task.Yield();
-        }
     }
 
     public void StopSession()
@@ -177,6 +130,7 @@ public class InGameSession : IDisposable
     {
         // 비동기 소켓 연결 수락 시작
         Accept();
+
 
         // 20Hz 업데이트 타이머
         Timer updateTimer = new Timer(UpdateGameWorld, null, 0, 25); // 50ms 간격으로 업데이트 (20Hz)

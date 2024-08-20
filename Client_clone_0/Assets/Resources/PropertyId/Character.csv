@@ -1,0 +1,6 @@
+CharacterId,CharacterName,AttackRange,AttackRatePerLv,AttackRate,AttackPerLv,Attack,Defense,BulletId,TotalHP,HPPerLv,TotalMP,MPPerLv
+0,Test01,500,0.03,0.8,2,70,40,0,521,50,300,25
+1,Test02,400,0.03,0.82,3,69,35,1,559,60,321,25
+2,Test03,600,0.03,0.65,1.5,70,38,2,501,40,250,27
+3,Test04,500,0.03,0.74,2,65,32,3,490,35,290,26
+4,Test05,500,0.03,0.77,2,72,41,4,470,35,270,20

@@ -20,3 +20,14 @@ C:\Users\10HOME_AHCI\Desktop\이직준비\PortPolio\SharedCode\SharedCodeLibrary
 C:\Users\10HOME_AHCI\Desktop\이직준비\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.sourcelink.json
 C:\Users\10HOME_AHCI\Desktop\이직준비\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.dll
 C:\Users\10HOME_AHCI\Desktop\이직준비\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.pdb
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\bin\Debug\netstandard2.0\SharedCodeLibrary.deps.json
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\bin\Debug\netstandard2.0\SharedCodeLibrary.dll
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\bin\Debug\netstandard2.0\SharedCodeLibrary.pdb
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.csproj.AssemblyReference.cache
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.GeneratedMSBuildEditorConfig.editorconfig
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.AssemblyInfoInputs.cache
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.AssemblyInfo.cs
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.csproj.CoreCompileInputs.cache
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.sourcelink.json
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.dll
+D:\PortPolio\SharedCode\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.pdb

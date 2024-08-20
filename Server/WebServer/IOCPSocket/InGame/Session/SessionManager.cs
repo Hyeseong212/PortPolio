@@ -20,7 +20,7 @@ public class SessionManager
         createdSessions.TryAdd(sessionId, newSession);
 
         // 새로운 세션 시작
-        await newSession.StartSessionAsync();
+        newSession.StartSession();
 
         var addPlayerTasks = users.Select(player => newSession.AddPlayerAsync(player));
         await Task.WhenAll(addPlayerTasks);

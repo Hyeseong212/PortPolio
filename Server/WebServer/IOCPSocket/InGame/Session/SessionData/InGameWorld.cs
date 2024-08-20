@@ -19,7 +19,7 @@ internal class InGameWorld : IDisposable
 
 #if DEBUG
         string currentDirectory = Directory.GetCurrentDirectory();
-        string fullPath = Path.Combine(currentDirectory, "\\Resources\\PropertyId", "Character.csv");
+        string fullPath = currentDirectory + "\\Resources\\PropertyId\\Character.csv";
         //string rootPath = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.Parent?.Parent?.FullName;
         //string relativePath = @"WebServer\Resources\PropertyId\Character.csv";
 #elif RELEASE

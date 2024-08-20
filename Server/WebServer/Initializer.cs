@@ -106,7 +106,7 @@ public class Initializer
         {
             Logger.SetLogger(LOGTYPE.INFO, $"Server is running on http://127.0.0.1:5000");
         });
-
+        Logger.LoggerInit();
         app.Run(); // 애플리케이션 실행
     }
 

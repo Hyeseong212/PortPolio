@@ -69,8 +69,10 @@
     <Compile Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\HttpCommand\InventoryHttpCommand.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.dll" />
     <None Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary.asmdef" />
     <None Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\obj\Debug\netstandard2.0\SharedCodeLibrary.csproj.FileListAbsolute.txt" />
+    <None Include="Assets\Scripts\SharedCodeLibrary\SharedCodeLibrary\bin\Debug\netstandard2.0\SharedCodeLibrary.dll" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -337,9 +339,6 @@
     <Reference Include="Microsoft.NET.StringTools">
       <HintPath>Assets\Plugins\MessagePack\Microsoft.NET.StringTools.dll</HintPath>
     </Reference>
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>Assets\Plugins\MessagePack\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
       <HintPath>Assets\Plugins\MessagePack\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -351,6 +350,9 @@
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions">
       <HintPath>Assets\Plugins\MessagePack\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>Assets\Plugins\MessagePack\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.48f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>

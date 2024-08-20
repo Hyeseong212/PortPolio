@@ -53,6 +53,7 @@ public static class WebSocketHandler
 
     private static async Task HandlePacket(WebSocket webSocket, byte[] buffer, int count)
     {
+
         // 패킷 분석 로직
         byte protocol = buffer[0];
         byte[] lengthBytes = new byte[4];
@@ -75,7 +76,7 @@ public static class WebSocketHandler
 
         try
         {
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < length; i++)
             {
                 realData[i] = buffer[i + 5];
             }

@@ -4,6 +4,15 @@ using System.Threading.Tasks;
 
 public static class Logger
 {
+    public static void LoggerInit()
+    {
+        string logFilePath = GetLogDirectory();
+        if (File.Exists(logFilePath))
+        {
+            File.Delete(logFilePath);
+        }
+    }
+
     public static void SetLogger(LOGTYPE logType, string log)
     {
         WriteLog(logType, log);

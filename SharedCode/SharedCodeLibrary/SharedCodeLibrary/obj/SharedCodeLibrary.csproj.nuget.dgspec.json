@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\10HOME_AHCI\\Desktop\\이직준비\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {}
+    "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {}
   },
   "projects": {
-    "C:\\Users\\10HOME_AHCI\\Desktop\\이직준비\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
+    "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\10HOME_AHCI\\Desktop\\이직준비\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
+        "projectUniqueName": "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
         "projectName": "SharedCodeLibrary",
-        "projectPath": "C:\\Users\\10HOME_AHCI\\Desktop\\이직준비\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
+        "projectPath": "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
         "packagesPath": "C:\\Users\\10HOME_AHCI\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\10HOME_AHCI\\Desktop\\이직준비\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\obj\\",
+        "outputPath": "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\10HOME_AHCI\\AppData\\Roaming\\NuGet\\NuGet.Config",
