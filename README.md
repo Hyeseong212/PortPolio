@@ -1,6 +1,5 @@
 # 영상링크
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-K1Rn2rFDRA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+[![유튜브 영상](https://img.youtube.com/vi/-K1Rn2rFDRA/0.jpg)](https://youtu.be/-K1Rn2rFDRA)
 # 프로젝트 구조도
 ![image](https://github.com/user-attachments/assets/f68a4e7b-4e9f-4ddb-b7e9-71e7b5fae3ae)
 # Server 프로젝트
