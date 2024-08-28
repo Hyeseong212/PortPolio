@@ -27,7 +27,7 @@ namespace WebServer.Repository
             string connectionString = $"server={ipAndPort.Item1}; port={ipAndPort.Item2}; database=WebServerDB; user=root; password=1234";
             //string connectionString = "server=192.168.123.1; port=3306; database=WebServerDB; user=root; password=1234";
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-            optionsBuilder.LogTo(Console.WriteLine);
+            //optionsBuilder.LogTo(Console.WriteLine);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

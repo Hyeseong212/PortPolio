@@ -84,20 +84,22 @@ public class Initializer
 
         app.UseRouting(); // 라우팅 미들웨어 추가
         app.UseAuthorization(); // 권한 부여 미들웨어 사용
-        //app.UseEndpoints(endpoints =>
-        //{
-        //    endpoints.MapControllers(); // 컨트롤러 매핑
-        //});
-        // 최상위 라우트 등록 사용
+
         app.MapControllers(); // 컨트롤러 매핑
 
         // WebSocket 처리 추가
         app.UseWebSockets();
 
-        var chatService = app.Services.GetRequiredService<WebSocketChatService>();
-        var matchService = app.Services.GetRequiredService<WebSocketMatchService>();
-        var loginService = app.Services.GetRequiredService<WebSocketLoginService>(); // WS_LoginService 가져오기
-        WebSocketHandler.Configure(chatService, matchService, loginService); // loginService를 포함하여 설정
+        app.Use(async (context, next) =>
+        {
+            var chatService = context.RequestServices.GetRequiredService<WebSocketChatService>();
+            var matchService = context.RequestServices.GetRequiredService<WebSocketMatchService>();
+            var loginService = context.RequestServices.GetRequiredService<WebSocketLoginService>();
+
+            WebSocketHandler.Configure(chatService, matchService, loginService);
+
+            await next.Invoke();
+        });
 
         app.MapWebSocketHandlers(); // WebSocket 핸들러 매핑
 
@@ -106,6 +108,7 @@ public class Initializer
         {
             Logger.SetLogger(LOGTYPE.INFO, $"Server is running on http://127.0.0.1:5000");
         });
+
         Logger.LoggerInit();
         app.Run(); // 애플리케이션 실행
     }

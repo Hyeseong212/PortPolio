@@ -32,9 +32,4 @@
     <ProjectReference Include="..\..\SharedCode\SharedCodeLibrary\SharedCodeLibrary\SharedCodeLibrary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Helper\" />
-    <Folder Include="WebSocket\Helper\" />
-  </ItemGroup>
-
 </Project>
