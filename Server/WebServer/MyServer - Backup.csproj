@@ -16,17 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Helper\**" />
-    <Compile Remove="WebSocket\Helper\**" />
-    <Content Remove="Helper\**" />
-    <Content Remove="WebSocket\Helper\**" />
-    <EmbeddedResource Remove="Helper\**" />
-    <EmbeddedResource Remove="WebSocket\Helper\**" />
-    <None Remove="Helper\**" />
-    <None Remove="WebSocket\Helper\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Repository\AccountRepositoryFromMemory.cs" />
   </ItemGroup>
 
@@ -41,10 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SharedCode\SharedCodeLibrary\SharedCodeLibrary\SharedCodeLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="InGame\" />
   </ItemGroup>
 
 </Project>

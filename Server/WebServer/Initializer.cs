@@ -29,7 +29,6 @@ public class Initializer
         builder.Services.AddScoped<RankService, RankService>();
         builder.Services.AddScoped<GuildService, GuildService>();
         builder.Services.AddScoped<SessionService, SessionService>();
-        builder.Services.AddScoped<SessionManager, SessionManager>();
         builder.Services.AddScoped<WebSocketChatService, WebSocketChatService>();
         builder.Services.AddScoped<WebSocketMatchService, WebSocketMatchService>();
         builder.Services.AddScoped<WebSocketLoginService, WebSocketLoginService>();

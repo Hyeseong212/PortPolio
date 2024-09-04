@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Net.WebSockets;
 
@@ -189,5 +190,17 @@ namespace SharedCode.Model
             IsConnected = false;
             IsLoadingOK = false;
         }
+    }
+    public class InGameSessionProcessArgs
+    {
+        public string SessionId { get; set; }
+        public string Users { get; set; }
+    }
+    public class InGameSessionInfo
+    {
+        public long SessionId { get; set; }
+        public Process Process { get; set; }
+        public List<PlayerInfo> playerInfos { get; set; } = new List<PlayerInfo>();
+
     }
 }

@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Server\\WebServer\\MyServer.csproj": {}
+    "D:\\PortPolio\\Server\\WebServer\\MyServer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Server\\WebServer\\MyServer.csproj": {
+    "D:\\PortPolio\\Server\\WebServer\\MyServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Server\\WebServer\\MyServer.csproj",
+        "projectUniqueName": "D:\\PortPolio\\Server\\WebServer\\MyServer.csproj",
         "projectName": "MyServer",
-        "projectPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Server\\WebServer\\MyServer.csproj",
-        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Server\\WebServer\\obj\\",
+        "projectPath": "D:\\PortPolio\\Server\\WebServer\\MyServer.csproj",
+        "packagesPath": "C:\\Users\\10HOME_AHCI\\.nuget\\packages\\",
+        "outputPath": "D:\\PortPolio\\Server\\WebServer\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\10HOME_AHCI\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -32,8 +28,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
-                "projectPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj"
+              "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
+                "projectPath": "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj"
               }
             }
           }
@@ -43,6 +39,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -93,25 +94,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
+    "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
+        "projectUniqueName": "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
         "projectName": "SharedCodeLibrary",
-        "projectPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
-        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\obj\\",
+        "projectPath": "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj",
+        "packagesPath": "C:\\Users\\10HOME_AHCI\\.nuget\\packages\\",
+        "outputPath": "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\10HOME_AHCI\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -131,6 +128,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -163,7 +165,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

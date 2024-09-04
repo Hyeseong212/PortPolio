@@ -2,11 +2,13 @@
 using System.Net.Sockets;
 using System.Net;
 using SharedCode.Model;
-using Microsoft.Extensions.Logging.Abstractions;
-public class InGameSession : IDisposable
+using System.Net.Http;
+using Newtonsoft.Json;
+using SharedCodeLibrary.HttpCommand;
+
+public class InGameSession
 {
     public long SessionId { get; private set; }
-    public GameType GameType { get; private set; }
     public IPEndPoint GameRoomEndPoint { get; private set; }
     public List<PlayerInfo> Users; // 접속한 플레이어 관리
 
@@ -18,19 +20,24 @@ public class InGameSession : IDisposable
     private ManualResetEvent sessionEndedEvent = new ManualResetEvent(false);
     private InGameWorld world; // 인게임 세계 객체
     private SessionInfoManager sessionInfoMng;
-    private SessionManager sessionManager;
+    //private SessionManager sessionManager;
 
-    // Dispose 패턴에 필요한 변수
-    private bool disposed = false;
 
-    public InGameSession(long sessionId, GameType gameType, SessionManager sessionManager)
+    public InGameSession(long sessionId, string users)
     {
-        this.sessionManager = sessionManager;
         SessionId = sessionId;
-        GameType = gameType;
         Users = new List<PlayerInfo>();
         world = new InGameWorld(this);
         sessionInfoMng = new SessionInfoManager(this);
+
+        List<long> userUid = JsonConvert.DeserializeObject<List<long>>(users);
+        for(int i = 0; i < userUid.Count; i++)
+        {
+            PlayerInfo info = new PlayerInfo();
+            info.UserUID = userUid[i];
+            Users.Add(info);
+        }
+
 
         listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         // SocketAsyncEventArgs 초기화
@@ -62,11 +69,41 @@ public class InGameSession : IDisposable
         Logger.SetLogger(LOGTYPE.INFO, $"Session {SessionId} started on IP {localIP}, port {GameRoomEndPoint.Port}");
         Logger.SetLogger(LOGTYPE.INFO, $"Listening on {listenSocket.LocalEndPoint.ToString()}");
 
+        SendIPEndPointToMainServer(GameRoomEndPoint);
+
         // 리스닝 및 업데이트를 하나의 쓰레드에서 처리
         sessionThread = new Thread(RunSession);
         sessionThread.Start();
     }
+    private async void SendIPEndPointToMainServer(IPEndPoint endPoint)
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            var url = "http://127.0.0.1:5000/InGameSession/CreatedSessionIPEndPointSendToClient";
 
+            // IPEndPoint 정보를 JSON으로 직렬화
+            NewInGameSessionRequest requestData = new NewInGameSessionRequest
+            {
+                SessionId = this.SessionId.ToString(),
+                IPandPort = $"{endPoint.Address}:{endPoint.Port}"
+            };
+            // 객체를 JSON으로 직렬화
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(requestData), System.Text.Encoding.UTF8, "application/json");
+
+            try
+            {
+                // POST 요청 전송
+                HttpResponseMessage response = await client.PostAsync(url, jsonContent);
+                response.EnsureSuccessStatusCode(); // 성공적으로 응답을 받지 못하면 예외 발생
+
+                Logger.SetLogger(LOGTYPE.INFO, $"Successfully sent IPEndPoint to server: {requestData.IPandPort}");
+            }
+            catch (Exception ex)
+            {
+                Logger.SetLogger(LOGTYPE.ERROR, $"Failed to send IPEndPoint to server: {ex.Message}");
+            }
+        }
+    }
     public void StopSession()
     {
         isRunning = false;
@@ -309,7 +346,7 @@ public class InGameSession : IDisposable
 
         if (Users.Count <= 0)//만약 접속자가 0명이면 일단 지금은 테스트를 위해서 사람이없으니 세션을 정리해버리자
         {
-            await sessionManager.RemoveSession(this.SessionId);
+            //await sessionManager.RemoveSession(this.SessionId);
         }
     }
 
@@ -396,72 +433,6 @@ public class InGameSession : IDisposable
             if (user.Socket == null) continue;
             SendToClient(user.Socket, packet);
         }
-    }
-
-    public async Task EndGameCleanupAsync()
-    {
-        // 자원 정리 로직
-        await sessionManager.RemoveSession(this.SessionId);
-    }
-
-    // IDisposable 인터페이스 구현
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    // Dispose(bool disposing) 메서드
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposed)
-        {
-            return;
-        }
-
-        if (disposing)
-        {
-            // 관리되는 리소스 해제
-            listenSocket.Close();
-            listenSocket = null;
-
-            maxConnectionsSemaphore.Dispose();
-            sessionEndedEvent.Dispose();
-
-            // 스레드 정리
-            if (sessionThread != null && sessionThread.IsAlive)
-            {
-                sessionThread.Join(); // 스레드 종료 대기
-                sessionThread = null;
-            }
-
-            // 리스트 정리
-            if (Users != null)
-            {
-                Users.Clear();
-                Users = null;
-            }
-
-            // InGameWorld와 SessionInfoMng 정리
-            world.Dispose();
-            sessionInfoMng.Dispose();
-            if (eventArgsPool == null) return;
-
-            foreach (var eventArg in eventArgsPool)
-            {
-                eventArg.Dispose();
-            }
-
-            eventArgsPool = null;
-        }
-        Logger.SetLogger(LOGTYPE.INFO, "All Resources Disposed");
-        disposed = true;
-    }
-
-    // 소멸자 (Finalizer)
-    ~InGameSession()
-    {
-        Dispose(false);
     }
 
 }

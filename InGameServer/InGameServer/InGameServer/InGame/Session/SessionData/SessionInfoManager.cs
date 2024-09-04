@@ -141,39 +141,4 @@ internal class SessionInfoManager
             }
         }
     }
-    private bool disposed = false;
-
-    // 기타 리소스들...
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposed)
-        {
-            return;
-        }
-
-        if (disposing)
-        {
-            // 관리되는 리소스 해제
-            // 예: 데이터 리스트 클리어, 이벤트 핸들러 제거 등
-            InGamePlayerInfos.Clear();
-            InGameSession = null;
-        }
-
-        // 관리되지 않는 리소스 해제
-        // 필요한 경우 추가
-
-        disposed = true;
-    }
-
-    ~SessionInfoManager()
-    {
-        Dispose(false);
-    }
 }

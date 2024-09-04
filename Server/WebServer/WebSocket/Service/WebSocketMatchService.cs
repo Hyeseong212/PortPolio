@@ -1,4 +1,8 @@
+using Newtonsoft.Json;
 using SharedCode.Model;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.WebSockets;
 using WebServer.Repository.Interface;
@@ -14,12 +18,10 @@ public class WebSocketMatchService
 
     private readonly IAccountRepository _accountRepository;
     private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-    private readonly SessionManager _sessionManager;
     private readonly SemaphoreSlim _matchSemaphore = new SemaphoreSlim(1, 1);
 
-    public WebSocketMatchService(IAccountRepository accountRepository, SessionManager sessionManager)
+    public WebSocketMatchService(IAccountRepository accountRepository)
     {
-        _sessionManager = sessionManager;
         _accountRepository = accountRepository;
         Logger.SetLogger(LOGTYPE.INFO, $"{this.ToString()} init Complete");
         rankQueues = new Dictionary<Tier, Queue<PlayerInfo>>();
@@ -86,12 +88,13 @@ public class WebSocketMatchService
                 player.HasAccepted = true;
                 if (players.All(p => p.HasAccepted))
                 {
-                    var gameSession = await StartGameSession(match.Key, players, matchTypes[match.Key]);
-                    foreach (var matchedPlayer in players)
-                    {
-                        if (matchedPlayer.WebSocket == null || gameSession.GameRoomEndPoint == null) continue;
-                        await SendGameRoomIP(matchedPlayer.WebSocket, gameSession.GameRoomEndPoint);
-                    }
+                    await StartGameSession(match.Key, players, matchTypes[match.Key]);
+                    //var gameSession = await StartGameSession(match.Key, players, matchTypes[match.Key]);
+                    //foreach (var matchedPlayer in players)
+                    //{
+                    //    if (matchedPlayer.WebSocket == null || gameSession.GameRoomEndPoint == null) continue;
+                    //    await SendGameRoomIP(matchedPlayer.WebSocket, gameSession.GameRoomEndPoint);
+                    //}
                 }
                 break;
             }
@@ -301,10 +304,9 @@ public class WebSocketMatchService
         await ClientManager.SendToSocket(clientSocket, packet);
     }
 
-    private async Task<InGameSession> StartGameSession(long matchId, List<PlayerInfo> matchedPlayers, GameType gameType)
+    private async Task StartGameSession(long matchId, List<PlayerInfo> matchedPlayers, GameType gameType)
     {
-
-        var gameSession = await _sessionManager.InGameSessionCreate(matchedPlayers, gameType);
+        await StartGameSession(matchedPlayers, gameType);
 
         // 메인 서버에서 해당 소켓을 해제하고 인게임 세션으로 전달
         // 해제할필요없음.
@@ -312,7 +314,104 @@ public class WebSocketMatchService
         // 매칭 완료 후 pendingMatches에서 해당 매칭 제거
         pendingMatches.Remove(matchId);
         matchTypes.Remove(matchId);
+    }
+    //SessionManager합침
 
-        return gameSession;
+    //각 세션을 관리하는 프로세스를 관리합니다.
+    private ConcurrentDictionary<long, InGameSessionInfo> inGameSessionInfos = new ConcurrentDictionary<long, InGameSessionInfo>();
+
+    public async Task<bool> SendSessionIPAndPortToClient(long sessionId, IPEndPoint iPandPort)
+    {
+        if (inGameSessionInfos.TryGetValue(sessionId, out InGameSessionInfo _inGameSessionInfo))
+        {
+            foreach(var playerInfo in _inGameSessionInfo.playerInfos)
+            {
+                await SendGameRoomIP(playerInfo.WebSocket, iPandPort);
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public async Task<long> StartGameSession(List<PlayerInfo> users, GameType gameType)
+    {
+        long sessionId = DateTime.Now.Ticks;
+
+        InGameSessionProcessArgs inGameSessionProcessArgs = new InGameSessionProcessArgs();
+
+        inGameSessionProcessArgs.SessionId = sessionId.ToString();
+
+        List<long> userIds = new List<long>();
+
+        for (int i = 0; i < users.Count; i++)
+        {
+            userIds.Add(users[i].UserUID);
+        }
+
+        inGameSessionProcessArgs.Users = JsonConvert.SerializeObject(userIds);
+        // SessionInfoClass를 JSON 문자열로 직렬화
+        string sessionInfoJson = JsonConvert.SerializeObject(inGameSessionProcessArgs);
+
+
+
+        // 직렬화된 JSON 문자열을 인자로 전달
+        ProcessStartInfo startInfo = new ProcessStartInfo
+        {
+            FileName = "InGameSessionProcess.exe", // 세션을 관리하는 별도의 프로세스 실행 파일
+            Arguments = sessionInfoJson, // 직렬화된 JSON 문자열 전달
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        Process newProcess = Process.Start(startInfo);
+
+
+        if (users.Count != 0)
+        {
+            InGameSessionInfo inGameSessionInfo = new InGameSessionInfo();
+
+            inGameSessionInfo.SessionId = sessionId;
+
+            inGameSessionInfo.playerInfos = users;
+
+            inGameSessionInfo.Process = newProcess;
+
+            inGameSessionInfos.TryAdd(sessionId, inGameSessionInfo);
+            // 비동기적으로 로그 기록
+            await Logger.SetLoggerAsync(LOGTYPE.INFO, $"SessionInfo for ID {sessionId} has been created.");
+        }
+        else
+        {
+            await Logger.SetLoggerAsync(LOGTYPE.ERROR, $"Failed to create session for ID {sessionId}.");
+        }
+
+        return sessionId;
+    }
+
+    public InGameSessionInfo GetSessionProcess(long sessionId)
+    {
+        if (inGameSessionInfos.TryGetValue(sessionId, out InGameSessionInfo _inGameSessionInfo))
+        {
+            return _inGameSessionInfo;
+        }
+        return null;
+    }
+
+    public async Task<bool> RemoveSession(long sessionId)
+    {
+        if (inGameSessionInfos.TryRemove(sessionId, out InGameSessionInfo _inGameSessionInfo))
+        {
+            if (_inGameSessionInfo.Process != null && !_inGameSessionInfo.Process.HasExited)
+            {
+                _inGameSessionInfo.Process.Kill(); // 프로세스 종료
+                await Logger.SetLoggerAsync(LOGTYPE.INFO, $"Session process with ID {sessionId} has been terminated.");
+            }
+            return true;
+        }
+        await Logger.SetLoggerAsync(LOGTYPE.INFO, $"Session process with ID {sessionId} not found.");
+        return false;
     }
 }
