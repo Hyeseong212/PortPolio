@@ -24,21 +24,23 @@ public class Initializer
         // 서비스들을 싱글톤으로 등록
         builder.Services.AddScoped<AccountService, AccountService>();
         builder.Services.AddSingleton<DataManager, DataManager>();
+        builder.Services.AddSingleton<WebSocketChatService, WebSocketChatService>();
+        builder.Services.AddSingleton<WebSocketMatchService, WebSocketMatchService>();
+        builder.Services.AddSingleton<WebSocketLoginService, WebSocketLoginService>();
         builder.Services.AddScoped<ShopService, ShopService>();
         builder.Services.AddScoped<InventoryService, InventoryService>();
         builder.Services.AddScoped<RankService, RankService>();
         builder.Services.AddScoped<GuildService, GuildService>();
         builder.Services.AddScoped<SessionService, SessionService>();
-        builder.Services.AddScoped<WebSocketChatService, WebSocketChatService>();
-        builder.Services.AddScoped<WebSocketMatchService, WebSocketMatchService>();
-        builder.Services.AddScoped<WebSocketLoginService, WebSocketLoginService>();
+        builder.Services.AddScoped<InGameSessionService, InGameSessionService>();
+
 
         // 리포지토리들을 싱글톤으로 등록
-        builder.Services.AddScoped<IAccountRepository, AccountRepositoryFromMySql>();
-        builder.Services.AddScoped<AccountDbContext, AccountDbContext>();
+        builder.Services.AddSingleton<IAccountRepository, AccountRepositoryFromMySql>();
+        builder.Services.AddSingleton<AccountDbContext, AccountDbContext>();
 
         // RedisContext 등록
-        builder.Services.AddScoped<RedisContext>(provider =>
+        builder.Services.AddSingleton<RedisContext>(provider =>
         {
             string currentDirectory = Directory.GetCurrentDirectory();
             string configFilePath = Path.Combine(currentDirectory, "Configuration", "DBconfig.txt");

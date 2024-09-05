@@ -11,14 +11,18 @@ public class WebSocketMatchService
 {
     private RatingRange ratingRange = new RatingRange();
     private Queue<PlayerInfo> normalQueue = new Queue<PlayerInfo>();
+    private Queue<List<PlayerInfo>> waitQueue = new Queue<List<PlayerInfo>>();
     private Dictionary<Tier, Queue<PlayerInfo>> rankQueues;
-    private const int MatchSize = 2; // 매칭에 필요한 최소 플레이어 수 (예: 2명)
+    private const int MatchSize = 1; // 매칭에 필요한 최소 플레이어 수 (예: 2명)
     private Dictionary<long, List<PlayerInfo>> pendingMatches = new Dictionary<long, List<PlayerInfo>>();
     private Dictionary<long, GameType> matchTypes = new Dictionary<long, GameType>();
 
     private readonly IAccountRepository _accountRepository;
     private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     private readonly SemaphoreSlim _matchSemaphore = new SemaphoreSlim(1, 1);
+
+    // 각 세션을 관리하는 프로세스를 관리합니다.
+    private ConcurrentDictionary<long, InGameSessionInfo> inGameSessionInfos = new ConcurrentDictionary<long, InGameSessionInfo>();
 
     public WebSocketMatchService(IAccountRepository accountRepository)
     {
@@ -76,7 +80,7 @@ public class WebSocketMatchService
             await Task.Delay(50);
         }
     }
-
+    int i = 0;
     private async Task HandleGameAccept(WebSocket clientSocket, long userUid)
     {
         foreach (var match in pendingMatches)
@@ -86,15 +90,17 @@ public class WebSocketMatchService
             if (player != null)
             {
                 player.HasAccepted = true;
+
+                // 모든 플레이어가 수락했는지 확인
                 if (players.All(p => p.HasAccepted))
                 {
-                    await StartGameSession(match.Key, players, matchTypes[match.Key]);
-                    //var gameSession = await StartGameSession(match.Key, players, matchTypes[match.Key]);
-                    //foreach (var matchedPlayer in players)
-                    //{
-                    //    if (matchedPlayer.WebSocket == null || gameSession.GameRoomEndPoint == null) continue;
-                    //    await SendGameRoomIP(matchedPlayer.WebSocket, gameSession.GameRoomEndPoint);
-                    //}
+                    // RunProcess를 호출하여 인게임 서버 프로세스 실행
+                    await RunProcess();
+                    waitQueue.Enqueue(players);
+                    Logger.SetLogger(LOGTYPE.DEBUG, i++);
+                    // 대기 상태로 유지하고, 인게임 서버가 HTTP 요청으로 세션 정보를 보낼 때까지 대기
+                    pendingMatches.Remove(match.Key);
+                    matchTypes.Remove(match.Key);
                 }
                 break;
             }
@@ -170,7 +176,7 @@ public class WebSocketMatchService
                     Logger.SetLogger(LOGTYPE.INFO, $"User {player.UserUID} matched.");
                 }
 
-                // 매칭된 플레이어들에게 응답을 보내고 게임 세션 생성
+                // 매칭된 플레이어들에게 응답을 보내고 게임 세션 생성 대기
                 var sendTasks = pendingMatches[matchId].Select(player => SendMatchResponse(player.WebSocket));
                 await Task.WhenAll(sendTasks);
             }
@@ -285,6 +291,59 @@ public class WebSocketMatchService
         await ClientManager.SendToSocket(clientSocket, packet);
     }
 
+    // 인게임 서버 프로세스 실행 (RunProcess)
+    public async Task RunProcess()
+    {
+        // 세션 프로세스 실행 (인게임 서버 프로세스 시작)
+        string exePath = @"D:\PortPolio\InGameServer\InGameServer\InGameServer\bin\Debug\net8.0\InGameServer.exe";
+
+        ProcessStartInfo startInfo = new ProcessStartInfo
+        {
+            FileName = exePath,
+            UseShellExecute = true,
+            CreateNoWindow = false // 프로세스 실행만 함 (인자 전달 없음)
+        };
+
+        await Logger.SetLoggerAsync(LOGTYPE.INFO,"Session Process Start");
+
+        Process.Start(startInfo);
+    }
+
+    // 인게임 서버에서 받은 IP와 Port 정보를 대기 중인 플레이어들에게 전송
+    public async Task<bool> SendSessionIPAndPortToClient(long sessionId, IPEndPoint iPandPort)
+    {
+        InGameSessionInfo inGamePlayerInfo = new InGameSessionInfo(sessionId);
+        inGamePlayerInfo.playerInfos = waitQueue.Dequeue();
+
+        inGamePlayerInfo.GameRoomEndPoint = iPandPort;
+
+        inGameSessionInfos.TryAdd(sessionId, inGamePlayerInfo);
+
+        Logger.SetLogger(LOGTYPE.INFO, $"session : {sessionId} IP & Port : {iPandPort.Address}:{iPandPort.Port} is ready");
+
+        if (inGameSessionInfos.TryGetValue(sessionId, out InGameSessionInfo _inGameSessionInfo))
+        {
+            foreach (var playerInfo in _inGameSessionInfo.playerInfos)
+            {
+                await SendGameRoomIP(playerInfo.WebSocket, iPandPort);
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public InGameSessionInfo GetSessionProcess(long sessionId)
+    {
+        if (inGameSessionInfos.TryGetValue(sessionId, out InGameSessionInfo _inGameSessionInfo))
+        {
+            return _inGameSessionInfo;
+        }
+        return null;
+    }
+
     private async Task SendGameRoomIP(WebSocket clientSocket, IPEndPoint gameRoomEndPoint)
     {
         Packet packet = new Packet();
@@ -302,116 +361,5 @@ public class WebSocketMatchService
         packet.push(gameRoomEndPoint.Port);
 
         await ClientManager.SendToSocket(clientSocket, packet);
-    }
-
-    private async Task StartGameSession(long matchId, List<PlayerInfo> matchedPlayers, GameType gameType)
-    {
-        await StartGameSession(matchedPlayers, gameType);
-
-        // 메인 서버에서 해당 소켓을 해제하고 인게임 세션으로 전달
-        // 해제할필요없음.
-
-        // 매칭 완료 후 pendingMatches에서 해당 매칭 제거
-        pendingMatches.Remove(matchId);
-        matchTypes.Remove(matchId);
-    }
-    //SessionManager합침
-
-    //각 세션을 관리하는 프로세스를 관리합니다.
-    private ConcurrentDictionary<long, InGameSessionInfo> inGameSessionInfos = new ConcurrentDictionary<long, InGameSessionInfo>();
-
-    public async Task<bool> SendSessionIPAndPortToClient(long sessionId, IPEndPoint iPandPort)
-    {
-        if (inGameSessionInfos.TryGetValue(sessionId, out InGameSessionInfo _inGameSessionInfo))
-        {
-            foreach(var playerInfo in _inGameSessionInfo.playerInfos)
-            {
-                await SendGameRoomIP(playerInfo.WebSocket, iPandPort);
-            }
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    public async Task<long> StartGameSession(List<PlayerInfo> users, GameType gameType)
-    {
-        long sessionId = DateTime.Now.Ticks;
-
-        InGameSessionProcessArgs inGameSessionProcessArgs = new InGameSessionProcessArgs();
-
-        inGameSessionProcessArgs.SessionId = sessionId.ToString();
-
-        List<long> userIds = new List<long>();
-
-        for (int i = 0; i < users.Count; i++)
-        {
-            userIds.Add(users[i].UserUID);
-        }
-
-        inGameSessionProcessArgs.Users = JsonConvert.SerializeObject(userIds);
-        // SessionInfoClass를 JSON 문자열로 직렬화
-        string sessionInfoJson = JsonConvert.SerializeObject(inGameSessionProcessArgs);
-
-
-
-        // 직렬화된 JSON 문자열을 인자로 전달
-        ProcessStartInfo startInfo = new ProcessStartInfo
-        {
-            FileName = "InGameSessionProcess.exe", // 세션을 관리하는 별도의 프로세스 실행 파일
-            Arguments = sessionInfoJson, // 직렬화된 JSON 문자열 전달
-            RedirectStandardOutput = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-
-        Process newProcess = Process.Start(startInfo);
-
-
-        if (users.Count != 0)
-        {
-            InGameSessionInfo inGameSessionInfo = new InGameSessionInfo();
-
-            inGameSessionInfo.SessionId = sessionId;
-
-            inGameSessionInfo.playerInfos = users;
-
-            inGameSessionInfo.Process = newProcess;
-
-            inGameSessionInfos.TryAdd(sessionId, inGameSessionInfo);
-            // 비동기적으로 로그 기록
-            await Logger.SetLoggerAsync(LOGTYPE.INFO, $"SessionInfo for ID {sessionId} has been created.");
-        }
-        else
-        {
-            await Logger.SetLoggerAsync(LOGTYPE.ERROR, $"Failed to create session for ID {sessionId}.");
-        }
-
-        return sessionId;
-    }
-
-    public InGameSessionInfo GetSessionProcess(long sessionId)
-    {
-        if (inGameSessionInfos.TryGetValue(sessionId, out InGameSessionInfo _inGameSessionInfo))
-        {
-            return _inGameSessionInfo;
-        }
-        return null;
-    }
-
-    public async Task<bool> RemoveSession(long sessionId)
-    {
-        if (inGameSessionInfos.TryRemove(sessionId, out InGameSessionInfo _inGameSessionInfo))
-        {
-            if (_inGameSessionInfo.Process != null && !_inGameSessionInfo.Process.HasExited)
-            {
-                _inGameSessionInfo.Process.Kill(); // 프로세스 종료
-                await Logger.SetLoggerAsync(LOGTYPE.INFO, $"Session process with ID {sessionId} has been terminated.");
-            }
-            return true;
-        }
-        await Logger.SetLoggerAsync(LOGTYPE.INFO, $"Session process with ID {sessionId} not found.");
-        return false;
     }
 }

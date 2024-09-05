@@ -53,26 +53,23 @@ internal class SessionInfoManager
             OnAllPlayersLoadingOk();
         }
     }
-
+    int PlayerNumber = 0;
     private void CheckAllPlayerSyncOK(byte[] userUid, Socket client)
     {
         long Useruid = BitConverter.ToInt64(userUid.Skip(1).ToArray());
+
+        PlayerInfo player = new PlayerInfo();
+
+        player.UserUID = Useruid;
+        player.Socket = client;
+
+        InGameSession.AddPlayer(player);
 
         // InGamePlayerInfo에서 해당 플레이어 찾기
         var inGamePlayerInfo = InGamePlayerInfos.FirstOrDefault(p => p.UserUID == Useruid);
         if (inGamePlayerInfo != null)
         {
             inGamePlayerInfo.IsConnected = true;
-        }
-
-        // PlayerInfo에서 해당 플레이어의 소켓 업데이트
-        if (InGameSession == null) return;
-        if (InGameSession.Users == null) return;
-        var playerInfo = InGameSession.Users.FirstOrDefault(p => p.UserUID == Useruid);
-        if (playerInfo != null)
-        {
-            playerInfo.Socket = client;
-            InGameSession.SetSocket(playerInfo);
         }
 
         // 여기에 모든 플레이어가 모두 연결되었는지 체크하는 로직

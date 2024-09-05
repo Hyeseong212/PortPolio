@@ -22,23 +22,12 @@ public class InGameSession
     private SessionInfoManager sessionInfoMng;
     //private SessionManager sessionManager;
 
-
-    public InGameSession(long sessionId, string users)
+    public InGameSession() // List<long>로 변경
     {
-        SessionId = sessionId;
+        SessionId = DateTime.Now.Ticks;
         Users = new List<PlayerInfo>();
         world = new InGameWorld(this);
         sessionInfoMng = new SessionInfoManager(this);
-
-        List<long> userUid = JsonConvert.DeserializeObject<List<long>>(users);
-        for(int i = 0; i < userUid.Count; i++)
-        {
-            PlayerInfo info = new PlayerInfo();
-            info.UserUID = userUid[i];
-            Users.Add(info);
-        }
-
-
         listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         // SocketAsyncEventArgs 초기화
         for (int i = 0; i < 100; i++)
@@ -50,6 +39,7 @@ public class InGameSession
             eventArgsPool.Enqueue(eventArg);
         }
     }
+
 
     public void StartSession()
     {

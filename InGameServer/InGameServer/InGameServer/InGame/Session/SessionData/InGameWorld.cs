@@ -309,8 +309,6 @@ internal class InGameWorld : IDisposable
         // 1분 기다리기
         await Task.Delay(TimeSpan.FromMinutes(1));
 
-        // 1분 후 인게임 세션 정리
-        InGameSession?.EndGameCleanupAsync();
     }
 
     private bool disposed = false;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Sockets;
 using System.Net.WebSockets;
 
@@ -194,13 +195,18 @@ namespace SharedCode.Model
     public class InGameSessionProcessArgs
     {
         public string SessionId { get; set; }
-        public string Users { get; set; }
+        public List<long> Users { get; set; } // List<long>로 변경
     }
     public class InGameSessionInfo
     {
-        public long SessionId { get; set; }
-        public Process Process { get; set; }
-        public List<PlayerInfo> playerInfos { get; set; } = new List<PlayerInfo>();
+        public long SessionId { get; set; }              // 세션 ID
+        public List<PlayerInfo> playerInfos { get; set; } = new List<PlayerInfo>(); // 세션에 참여한 플레이어 목록
+        public IPEndPoint GameRoomEndPoint { get; set; } // 세션의 IP와 Port 정보 (게임 룸 정보)
 
+        public InGameSessionInfo(long sessionId)
+        {
+            SessionId = sessionId;
+        }
     }
+
 }

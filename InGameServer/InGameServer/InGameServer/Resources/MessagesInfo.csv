@@ -1,0 +1,16 @@
+TYPE,MessageCode,Message
+Error,1,Invalid password.
+Error,2,The ID already exists.
+Error,3,Please create a password that is at least 10 characters long.
+Error,4,"The password must contain a mix of special characters, numbers, and letters."
+Error,5,The ID does not exist.
+Error,6,Not Enough Gold 
+Error,7,Can't Find ItemID
+Info,0,Account Create Success
+Info,1,Login Success
+Info,2,Nickname Create Success
+Error,8,Nickname Create Fail
+Info,3,Buy Success 
+Error,9,Buy Fail
+Error,10,Sell Fail
+Info,4,Sell Success
