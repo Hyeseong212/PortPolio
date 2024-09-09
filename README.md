@@ -1,7 +1,12 @@
 # 영상링크
+
 [![유튜브 영상](https://img.youtube.com/vi/-K1Rn2rFDRA/0.jpg)](https://youtu.be/-K1Rn2rFDRA)
 # 프로젝트 구조도
 ![image](https://github.com/user-attachments/assets/f68a4e7b-4e9f-4ddb-b7e9-71e7b5fae3ae)
+#📃 프로젝트 정보
+
+## 제작 기간
+
 # Server 프로젝트
 
 ## 개요
