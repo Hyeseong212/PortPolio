@@ -1,11 +1,20 @@
-# 영상링크
 
-[![유튜브 영상](https://img.youtube.com/vi/-K1Rn2rFDRA/0.jpg)](https://youtu.be/-K1Rn2rFDRA)
 # 프로젝트 구조도
 ![image](https://github.com/user-attachments/assets/f68a4e7b-4e9f-4ddb-b7e9-71e7b5fae3ae)
-#📃 프로젝트 정보
+
+# 📃프로젝트 정보
+
+League Of Legends에서 아레나 방식 게임방식식을 착안하여
+C# ASP.NET와 MySQL, Unity 로 유저인벤토리, 레이팅 시스템, 채팅, 길드시스템, 인게임등을 REST API 소켓통신으로 구현하였습니다.
+
+Rest API 메인서버와 TCP 인게임 서버를 별도의 프로세스를 두어 인게임의 내부로직이 메인서버의 진행을 막지않아 안정성을 강화 및 의존성을 떨어트려 유지보수를 쉽게 하였습니다.
+
+#📹 영상링크
+
+[![유튜브 영상](https://img.youtube.com/vi/-K1Rn2rFDRA/0.jpg)](https://youtu.be/-K1Rn2rFDRA)
 
 ## 제작 기간
+2024-04-15 ~ 2024-07-15
 
 # Server 프로젝트
 
@@ -29,31 +38,23 @@ Server 프로젝트는 웹 서버를 구축하기 위해 설계된 애플리케�
 - **API 문서화**: Swagger
 - **빌드 도구**: Visual Studio
 
-## Server 디렉토리 구조
+## Server 프로젝트 구조
 
 - `Configuration`: 설정 관련 클래스 및 파일
+- `Resources`: 게임 데이터 관련 파일
 - `Controllers`: MVC 컨트롤러 클래스
-- `Helper`: 헬퍼 클래스 및 유틸리티 함수
+   - 계정관련, 길드관련, 인게임 세션관련, 인벤토리, 랭크, 로그인세션관련, 상점 등의 컨트롤링 클래스
 - `Model`: 데이터 모델 클래스
+   - 비즈니스 모델 클래스
 - `Repository`: 데이터 저장소 클래스
+   - MySQL 관련 함수, Redis관련 함수 클래스
 - `Service`: 서비스 클래스
+   - 계정관련, 길드관련, 인게임 세션관련, 인벤토리, 랭크, 로그인세션관련, 상점 등의 서비스 클래스
 - `SwaggerOptions`: Swagger 설정 파일
 - `Utils`: 유틸리티 클래스 및 함수
+   - 로그, 패킷 조립, 기타 유틸성 클래스
 - `WebSocket`: WebSocket 관련 파일
-- `IOCPSocket/InGame`: 인게임 세션 통신 관련 클래스 및 파일
-
-## 설치 및 실행 방법
-
-1. **Redis 서버 설정**:
-   - 프로젝트 루트 폴더의 `Redis` 디렉토리에서 Redis 서버 실행 파일을 확인합니다.
-   - Redis를 실행합니다.
-
-2. **프로젝트 빌드 및 실행**:
-   - Visual Studio에서 `WebServer.sln` 솔루션 파일을 엽니다.
-   - 솔루션을 빌드하고 실행합니다.
-
-3. **API 문서 확인**:
-   - Swagger UI를 통해 API 문서를 확인할 수 있습니다. 기본 주소는 `http://localhost:{포트}/swagger`입니다.
+   - 로비채팅, 매칭관련 클래스
 
 ## 서버 프로젝트 기능 요약
 
@@ -70,7 +71,6 @@ Server 프로젝트는 웹 서버를 구축하기 위해 설계된 애플리케�
 
 # Client 프로젝트
 
-## 개요
 Client 프로젝트는 웹 서버와의 통신을 위한 클라이언트 애플리케이션입니다. 이 프로젝트는 다양한 컨트롤러, 헬퍼, 모델, 뷰를 활용하여 사용자 인터페이스와 데이터를 처리하며, 인게임 세션 통신을 위한 클래스를 포함하고 있습니다.
 
 ## 주요 기능
@@ -87,7 +87,7 @@ Client 프로젝트는 웹 서버와의 통신을 위한 클라이언트 애플�
 - **프레임워크**: .NET Core
 - **통신 프로토콜**: HTTP, WebSocket, TCP
 
-## 프로젝트 구조
+## Client 프로젝트 구조
 
 - `Controller`: MVC 컨트롤러 클래스
 - `Helper`: 헬퍼 클래스 및 유틸리티 함수
@@ -98,7 +98,6 @@ Client 프로젝트는 웹 서버와의 통신을 위한 클라이언트 애플�
 
 # SharedCode
 
-## 개요
 Client 프로젝트와 Server 프로젝트에서 서로 공유하는 코드입니다.
 
 ## 주요 기능
@@ -118,6 +117,3 @@ Client 프로젝트와 Server 프로젝트에서 서로 공유하는 코드입�
 - 로그인 및 길드 관리 (HTTP 통신)
 - 매칭 및 채팅 (WebSocket 통신)
 - 인게임 (TCP 소켓 통신)
-
-## 설명
-롤 아레나를 재밌게 한 기억이 있어 참고하여 기초 틀만 작업해보았습니다.
