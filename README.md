@@ -38,21 +38,17 @@ Rest API 메인서버와 TCP 인게임 서버를 별도의 프로세스를 두�
 - **API 문서화**: Swagger
 - **빌드 도구**: Visual Studio
 
-## 서버 프로젝트 기능 요약
+## RESTful API 메인서버 기능 요약
 
 - Redis로 유저 세션관리
 - HTTP 프로토콜로 주요 서비스 및 리포지토리 클래스 작성
-- WebSocket으로 채팅 시스템 및 매칭 시스템 구현
-- 인게임 TCP 소켓 통신으로 실시간 통신 구현
 - Swagger를 통한 API 문서화 설정
 - 로그인 및 길드 관리 (HTTP 통신)
-- 매칭 및 채팅 (WebSocket 통신)
-- 인게임 (TCP 소켓 통신)
 - Task를 사용하여 비동기 프로그래밍 및 쓰레드풀로 고성능으로 작동
+- 
 - lock, semaphore를 이용한 동시성처리
 
 # WebSocket 메인서버
-
 
 ## WebSocket 메인서버 구조도
 ![image](https://github.com/user-attachments/assets/91d5ffee-2aa3-49f6-a119-d3d5a15d7972)
@@ -69,21 +65,35 @@ Rest API 메인서버와 TCP 인게임 서버를 별도의 프로세스를 두�
 - **프로그래밍 언어**: C#
 - **프레임워크**: .NET Core
 - **데이터베이스**: Redis, MySql
-- **API 문서화**: Swagger
 - **빌드 도구**: Visual Studio
 
 ## 서버 프로젝트 기능 요약
 
 - Redis로 유저 세션관리
-- HTTP 프로토콜로 주요 서비스 및 리포지토리 클래스 작성
 - WebSocket으로 채팅 시스템 및 매칭 시스템 구현
-- 인게임 TCP 소켓 통신으로 실시간 통신 구현
-- Swagger를 통한 API 문서화 설정
-- 로그인 및 길드 관리 (HTTP 통신)
-- 매칭 및 채팅 (WebSocket 통신)
-- 인게임 (TCP 소켓 통신)
+- 매칭 및 채팅
 - Task를 사용하여 비동기 프로그래밍 및 쓰레드풀로 고성능으로 작동
-- lock, semaphore를 이용한 동시성처리
+
+# In Game 세션 서버
+
+## In Game 세션 서버 구조도
+![image](https://github.com/user-attachments/assets/21cbc522-abdc-47ea-974c-1a9e0514208b)
+
+
+## 주요 기능
+
+- **인게임 동기화**: 인게임에서 환경요소 동기화, 유저 캐릭터들의 상태 동기화를 담당합니다
+- **인게임 유저 데이터 동기화**: 세션에 접속한 유저들의 데이터를 보관하고 결과처리를 담당합니다
+
+## 기술 스택
+
+- **프로그래밍 언어**: C#
+- **프레임워크**: .NET Core
+- **빌드 도구**: Visual Studio
+
+## 서버 프로젝트 기능 요약
+
+-인게임 환경 동기화 및 유저 게임결과처리
 
 # Client 프로젝트
 
