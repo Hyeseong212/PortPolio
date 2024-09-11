@@ -1,7 +1,6 @@
 
 # 프로젝트 아키텍쳐
-![image](https://github.com/user-attachments/assets/717af687-0026-48aa-b857-8d4884dc3f2e)
-
+![image](https://github.com/user-attachments/assets/4d31fa94-a006-4e94-8d8a-6b4b07fb183b)
 
 # 📃프로젝트 정보
 
