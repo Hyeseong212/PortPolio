@@ -1458,19 +1458,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\10HOME_AHCI\\.nuget\\packages\\": {}
+    "C:\\Users\\USER\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\PortPolio\\Server\\WebServer\\MyServer.csproj",
+      "projectUniqueName": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Server\\WebServer\\MyServer.csproj",
       "projectName": "MyServer",
-      "projectPath": "D:\\PortPolio\\Server\\WebServer\\MyServer.csproj",
-      "packagesPath": "C:\\Users\\10HOME_AHCI\\.nuget\\packages\\",
-      "outputPath": "D:\\PortPolio\\Server\\WebServer\\obj\\",
+      "projectPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Server\\WebServer\\MyServer.csproj",
+      "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\Server\\WebServer\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\10HOME_AHCI\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1484,8 +1489,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
-              "projectPath": "D:\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj"
+            "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj": {
+              "projectPath": "C:\\Users\\USER\\Desktop\\MyProject\\PortPolio\\SharedCode\\SharedCodeLibrary\\SharedCodeLibrary\\SharedCodeLibrary.csproj"
             }
           }
         }
@@ -1550,7 +1555,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

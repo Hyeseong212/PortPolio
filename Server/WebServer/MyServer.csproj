@@ -17,12 +17,16 @@
 
   <ItemGroup>
     <Compile Remove="Helper\**" />
+    <Compile Remove="InGame\**" />
     <Compile Remove="WebSocket\Helper\**" />
     <Content Remove="Helper\**" />
+    <Content Remove="InGame\**" />
     <Content Remove="WebSocket\Helper\**" />
     <EmbeddedResource Remove="Helper\**" />
+    <EmbeddedResource Remove="InGame\**" />
     <EmbeddedResource Remove="WebSocket\Helper\**" />
     <None Remove="Helper\**" />
+    <None Remove="InGame\**" />
     <None Remove="WebSocket\Helper\**" />
   </ItemGroup>
 
@@ -41,10 +45,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SharedCode\SharedCodeLibrary\SharedCodeLibrary\SharedCodeLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="InGame\" />
   </ItemGroup>
 
 </Project>
