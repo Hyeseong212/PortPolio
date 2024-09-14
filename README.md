@@ -32,7 +32,7 @@ Rest API 메인서버와 TCP 인게임 서버를 별도의 프로세스를 두�
 ## 기술 스택
 
 - **프로그래밍 언어**: C#
-- **프레임워크**: .NET Core
+- **프레임워크**: .NET Core, ASP.NET
 - **데이터베이스**: Redis, MySql
 - **API 문서화**: Swagger
 - **빌드 도구**: Visual Studio
