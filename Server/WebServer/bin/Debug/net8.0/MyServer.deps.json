@@ -243,7 +243,10 @@
           "MessagePack.Annotations": "2.5.172"
         },
         "runtime": {
-          "SharedCodeLibrary.dll": {}
+          "SharedCodeLibrary.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
