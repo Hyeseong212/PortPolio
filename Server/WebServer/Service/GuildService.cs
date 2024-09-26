@@ -39,7 +39,7 @@ namespace WebServer.Service
             }
             else
             {
-                return (true, "Find Guild Fail", "");
+                return (false, "Find Guild Fail", "");
             }
         }
         public async Task<(bool, string)> RequestingJoinGuildAsync(long guildId, long accountId)
@@ -51,7 +51,7 @@ namespace WebServer.Service
             }
             else
             {
-                return (true, "Join Request Fail");
+                return (false, "Join Request Fail");
             }
         }
         public async Task<(bool, string, string)> GetGuildInfoAsync(long guildId)
@@ -64,7 +64,7 @@ namespace WebServer.Service
             }
             else
             {
-                return (true, "GetGuildInfo Request Fail", "");
+                return (false, "GetGuildInfo Request Fail", "");
             }
         }
         public async Task<(bool, string, string)> GetGuildJoinRequestAsync(long guildId)

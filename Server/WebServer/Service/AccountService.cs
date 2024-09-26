@@ -64,19 +64,32 @@ namespace WebServer.Service
             var account = await _accountRepository.GetAccountAsync(id);
             if (account == null)
             {
-                string message = _dataManager.MessageHandler.GetMessage("Error", 5); // ID가 존재하지 않습니다.
+                string message = _dataManager.MessageHandler.GetMessage("Error", 4); // ID가 존재하지 않습니다.
                 return (false, message, null);
             }
 
             if (!Utils.VerifyPassword(pw, account.UserPassword))
             {
-                string message = _dataManager.MessageHandler.GetMessage("Error", 1); // 올바르지 않은 비밀번호입니다.
+                string message = _dataManager.MessageHandler.GetMessage("Error", 0); // 올바르지 않은 비밀번호입니다.
                 return (false, message, null);
             }
 
+            // 닉네임 가져오기 (null 체크 추가)
             var nickName = await _accountRepository.GetNickName(account.AccountId);
+            if (nickName == null)
+            {
+                string message = _dataManager.MessageHandler.GetMessage("Error", 4); // 닉네임이 없습니다.
+                return (false, message, null);
+            }
+
+            // 길드 ID 가져오기 (null 또는 유효성 검사 추가)
             var guildId = await _accountRepository.GetAccountGuildId(account.AccountId);
-            
+            if (!guildId.Item1 || guildId.Item2 == 0) // Item1이 false이거나, 길드가 없는 경우
+            {
+                string message = _dataManager.MessageHandler.GetMessage("Error", 4); // 길드가 존재하지 않습니다.
+                return (false, message, null);
+            }
+
             // 기존 세션 무효화
             await _redisRepository.DeleteSessionAsync(account.AccountId);
 
@@ -92,13 +105,16 @@ namespace WebServer.Service
                 return (false, message, null);
             }
 
-            UserEntity userEntity = new UserEntity();
-            userEntity.Userid = id;
-            userEntity.UserPW = pw;
-            userEntity.UserUID = account.AccountId;
-            userEntity.SessionId = sessionId;
-            userEntity.UserName = nickName.AccountNickName;
-            userEntity.GuildUID = guildId.Item2;
+            // UserEntity 생성 (null 값이 없도록 주의)
+            UserEntity userEntity = new UserEntity
+            {
+                Userid = id,
+                UserPW = pw,
+                UserUID = account.AccountId,
+                SessionId = sessionId,
+                UserName = nickName.AccountNickName,  // 닉네임이 유효한지 확인
+                GuildUID = guildId.Item2  // 길드 ID가 유효한지 확인
+            };
 
             string jsonUserEntity = JsonConvert.SerializeObject(userEntity);
 
@@ -114,7 +130,7 @@ namespace WebServer.Service
             }
             else
             {
-                return (true, "Logout Fail");
+                return (false, "Logout Fail");
             }
         }
 
