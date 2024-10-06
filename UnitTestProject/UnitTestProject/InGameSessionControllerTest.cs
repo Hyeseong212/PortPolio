@@ -1,34 +1,65 @@
 ﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebServer.Controllers;
+using SharedCode.Model;
+using System.Net.WebSockets;
+using System.Net;
 using WebServer.Repository.Interface;
 using WebServer.Service;
-
 namespace UnitTestProject
 {
-    public class InGameSessionControllerTest
+    public class InGameSessionServiceTest
     {
-        private readonly IAccountRepository _accountRepository;
         private readonly ILogger<InGameSessionService> _logger;
+        private readonly IAccountRepository _accountRepository;
+        private readonly WebSocketMatchService _webSocketMatchService; // 인터페이스 대신 실제 클래스 사용
         private readonly InGameSessionService _inGameSessionService;
-        private readonly WebSocketMatchService _webSocketMatchService; // 추가
-        private readonly InGameSessionController _inGameSessionController;
-        public InGameSessionControllerTest()
+
+        public InGameSessionServiceTest()
         {
-            _accountRepository = Substitute.For<IAccountRepository>();
             _logger = Substitute.For<ILogger<InGameSessionService>>();
-            _webSocketMatchService = Substitute.For<WebSocketMatchService>(); // WebSocketMatchService 모킹
+            _accountRepository = Substitute.For<IAccountRepository>();
 
-            // 실제 AccountService 인스턴스 생성
+            // 실제 WebSocketMatchService를 사용
+            _webSocketMatchService = new WebSocketMatchService(_accountRepository);
+
+            // 서비스 인스턴스 생성
             _inGameSessionService = new InGameSessionService(_logger, _accountRepository, _webSocketMatchService);
-
-            // AccountController 생성
-            _inGameSessionController = new InGameSessionController(Substitute.For<ILogger<InGameSessionController>>(), _inGameSessionService);
         }
+
+        [Fact]
+        public async Task TestNewSessionAsync_Success()
+        {
+            // Arrange
+            var sessionId = 1L;
+            var ipAndPort = "127.0.0.1:8080";
+            var ipAddress = IPAddress.Parse("127.0.0.1");
+            var endPoint = new IPEndPoint(ipAddress, 8080);
+
+            // 필요한 데이터를 추가하여 waitQueue를 채워줍니다.
+            var playerInfo = new PlayerInfo
+            {
+                UserUID = 12345,
+                WebSocket = Substitute.For<WebSocket>()
+            };
+
+            var playerList = new List<PlayerInfo> { playerInfo };
+
+            // WebSocketMatchService 인스턴스의 waitQueue에 플레이어를 추가
+            var matchService = new WebSocketMatchService(Substitute.For<IAccountRepository>());
+            var waitQueueField = typeof(WebSocketMatchService).GetField("waitQueue", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var waitQueue = (Queue<List<PlayerInfo>>)waitQueueField.GetValue(matchService);
+            waitQueue.Enqueue(playerList);  // waitQueue에 데이터를 추가
+
+            // 실제 WebSocketMatchService를 사용한 테스트
+            var inGameSessionService = new InGameSessionService(Substitute.For<ILogger<InGameSessionService>>(), Substitute.For<IAccountRepository>(), matchService);
+
+            // Act
+            var (success, message) = await inGameSessionService.NewSessionAsync(sessionId, ipAndPort);
+
+            // Assert
+            Assert.True(success);
+            Assert.Equal("Send Success", message);
+        }
+
     }
 }
